@@ -23,7 +23,7 @@ import os
 import sys
 import subprocess
 
-from settings import ROOT_DIR
+from .settings import ROOT_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ def _get_supported_releases_map():
         try:
             for line in f:
                 (release, branch_name) = line.split(" ")
-                release_map[release] = branch_name
+                release_map[release] = branch_name.strip()
         except ValueError:
             logger.error("Release file is not of valid format: <release_name> <branch>")
             sys.exit(1)

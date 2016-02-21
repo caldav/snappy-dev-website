@@ -23,7 +23,7 @@ import sys
 
 # Import local lib for site generation
 sys.path.insert(0, os.path.dirname(__file__))
-import sitegenerator
+from sitegenerator import main
 
 if __name__ == '__main__':
     main()

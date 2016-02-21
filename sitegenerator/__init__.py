@@ -23,7 +23,7 @@ import os
 import sys
 
 from . import settings
-from releases import get_releases_in_context
+from .releases import get_releases_in_context
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ def main():
         sys.exit(1)
 
     if not os.path.exists(settings.SITE_SRC):
-        logger.error("{} is required".format(settings.OUTPUT_DIR))
+        logger.error("{} is required".format(settings.SITE_SRC))
         sys.exit(1)
 
     for release in get_releases_in_context():
