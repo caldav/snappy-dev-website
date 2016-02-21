@@ -1,0 +1,9 @@
+# Python compiled files
+__pycache__/
+*.py[cod]
+
+# Idea content
+.idea/
+
+# Generated content
+out/
