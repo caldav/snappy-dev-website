@@ -1,0 +1,1 @@
+../../../../unpublished/setup/sdcard/ubuntu.md
