@@ -32,19 +32,30 @@ def main():
     '''Main entry point'''
     logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
 
-    # ensure that out doen't exist. If it exists, bail out
+    # Ensure that the generated directory doen't exist. If it exists, bails out
     if os.path.exists(settings.OUTPUT_DIR):
         logger.error("{} exists, please delete it first".format(settings.OUTPUT_DIR))
         sys.exit(1)
+    os.makedirs(settings.OUTPUT_DIR)
 
     if not os.path.exists(settings.SITE_SRC):
         logger.error("{} is required".format(settings.SITE_SRC))
         sys.exit(1)
 
+    # Loop and switch for each release context
     for release in get_releases_in_context():
         print(release)
 
+        # 1. Handle directory copy + setup/ generation for each supported device
+        # we break symlinks for real files
+        # those can use ##IMPORT as well and change content
+        # TODO: check value file!
+        for path, dirs, files in os.walk(settings.SITE_SRC):
+            for file_name in files:
+                print(file_name)
 
-    # 2. handle setup/ generation p
+        # 2. Handle get-started and prepend "this is part of the tour" link
+
+        # 3. Copy and import from other branches
 
 
