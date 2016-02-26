@@ -1,5 +1,5 @@
-# we centralize branch mapping here to not have to hunt through directories everytime we branch
-# format is:
+# We centralize branch mapping for this release here to avoid hunting through directories everytime we branch
+# Format is:
 # site_path repo_url branch_name path_to_content_copy_in_branch
 
 # Snappy doc
