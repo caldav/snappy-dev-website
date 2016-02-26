@@ -1,0 +1,22 @@
+# we centralize branch mapping here to not have to hunt through directories everytime we branch
+# format is:
+# site_path repo_url branch_name path_to_content_copy_in_branch
+
+# Snappy doc
+guides-and-reference/basic-usage/ https://github.com/ubuntu-core/snappy master docs/basic-usage/
+guides-and-reference/architecture/ https://github.com/ubuntu-core/snappy master docs/architecture/
+guides-and-reference/build-devices/ https://github.com/ubuntu-core/snappy master docs/build-devices/
+guides-and-reference/reference/snappy/ https://github.com/ubuntu-core/snappy master docs/reference/
+
+# Snapcraft doc
+guides-and-reference/build-apps/ https://github.com/ubuntu-core/snapcraft master docs/build-apps/
+guides-and-reference/reference/snapcraft/ https://github.com/ubuntu-core/snapcraft master docs/reference/
+examples/snapcraft-examples/ https://github.com/ubuntu-core/snapcraft master examples/
+
+# Ubuntu device flash doc?
+
+# Demos
+examples/demos/ https://github.com/ubuntu-core/demos master .
+
+# Codelabs
+#examples/codelabs https://github.com/ubuntu-core/codelabs master .
