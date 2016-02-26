@@ -25,7 +25,7 @@ import os
 import sys
 import subprocess
 
-from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING
+from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING, VARIABLES_MAPPING
 from .tools import next_relevant_line
 
 logger = logging.getLogger(__name__)
@@ -50,3 +50,29 @@ def get_releases_in_context():
     for release, branch in _get_supported_releases_map().items():
         subprocess.check_call(["git", "checkout", "-q", branch])
         yield release
+
+
+def load_device_metadata():
+    """Return maps of variables subtition for each device.
+
+    Format is:
+        { 'device-key':
+            { 'VARIABLE_NAME': 'VALUE' },
+              …
+            },
+          …
+        }
+
+        Example:
+        { 'rpi2': {'IMAGE_URL': 'https://download.ubuntu.com/blablabnla/rpi2-16.04.iso',
+                   'LOGO_URL': 'rpi2.png'},
+          'dragonboard': {'FOO': 'BAR },
+        }"""
+
+    devices_metadata = {}
+    with open(os.path.join(ROOT_DIR, VARIABLES_MAPPING)) as f:
+        for line in next_relevant_line(f):
+            (device_name, variable_name, value) = line.split(" ")
+            device_metadata = devices_metadata.get(device_name, {})
+            device_metadata[variable_name] = value
+    return devices_metadata
