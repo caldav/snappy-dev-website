@@ -1,0 +1,5 @@
+# We centralize supported devices and variables mapping for this release in here.
+# Those are per device specific instructions.
+# Format is:
+# device (name as in setup/) variable value
+rpi IMAGE_URL https://download.ubuntu.com/blablabnla/rpi2-16.04.iso
