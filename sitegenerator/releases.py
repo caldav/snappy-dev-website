@@ -25,7 +25,7 @@ import os
 import sys
 import subprocess
 
-from .settings import ROOT_DIR
+from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING
 from .tools import next_relevant_line
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 def _get_supported_releases_map():
     '''load supported release and master branch map'''
     release_map = {}
-    with open(os.path.join(ROOT_DIR, "releases")) as f:
+    with open(os.path.join(ROOT_DIR, RELEASES_BRANCH_MAPPING)) as f:
         try:
             for line in next_relevant_line(f):
                 (release, branch_name) = line.split(" ")
