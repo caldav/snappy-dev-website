@@ -72,7 +72,8 @@ def load_device_metadata():
     devices_metadata = {}
     with open(os.path.join(ROOT_DIR, VARIABLES_MAPPING)) as f:
         for line in next_relevant_line(f):
-            (device_name, variable_name, value) = line.split(" ")
+            # note that we may have spaces in value
+            (device_name, variable_name, *value) = line.split(" ")
             device_metadata = devices_metadata.get(device_name, {})
-            device_metadata[variable_name] = value
+            device_metadata[variable_name] = " ".join(value)
     return devices_metadata
