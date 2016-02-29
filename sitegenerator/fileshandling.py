@@ -30,6 +30,8 @@ logger = logging.getLogger(__name__)
 required_variable_re = re.compile('\[\[(.[^\]]*)\]\]')
 optional_variable_re = re.compile('\<\<(.[^>]*)\>\>')
 
+relative_markdown_links = re.compile("\(((?!http|www).[^\)]*\.md)\)")
+
 
 def import_and_copy_file(source_path, destination_path):
     '''Copy and import file content.
@@ -116,3 +118,15 @@ def replace_variables(path, device_name=None, device_vars={}):
 
     os.rename("{}.new".format(path), path)
     return success
+
+
+def reformat_links(path):
+    '''Strip down the final .md on any relative path in links as it will be replaced with real file names'''
+    with open("{}.new".format(path),'w') as dest_f:
+        with open(path) as source_f:
+            for line in source_f:
+                for link_to_replace in relative_markdown_links.findall(line):
+                    line = line.replace(link_to_replace, link_to_replace[:-3])
+                dest_f.write(line)
+
+    os.rename("{}.new".format(path), path)
