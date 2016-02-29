@@ -27,6 +27,10 @@ import re
 logger = logging.getLogger(__name__)
 
 
+required_variable_re = re.compile('\[\[(.[^\]]*)\]\]')
+optional_variable_re = re.compile('\<\<(.[^>]*)\>\>')
+
+
 def import_and_copy_file(source_path, destination_path):
     '''Copy and import file content.
 
@@ -55,3 +59,60 @@ def import_and_copy_file(source_path, destination_path):
                 dest_f.write(line)
     return success
 
+
+def _replace_from_map(line, regexp, replace_pattern, device_vars):
+    '''Abstract replacing the variable from map.
+
+    returning tuple is: (newline, failed_keywords_list)
+    '''
+    unfound_keywords_list = []
+    for keyword in regexp.findall(line):
+        try:
+            line = line.replace(replace_pattern.format(keyword), device_vars[keyword])
+        except KeyError:
+            unfound_keywords_list.append(keyword)
+    return (line, unfound_keywords_list)
+
+
+def _replace_line_content(line, filename, device_name, device_vars):
+    '''Return current line with replaced variable substitution.
+
+    returning tuple is: (newline, success)
+    '''
+    success = True
+
+    # handle optional variables first
+    replace_pattern = "<<{}>>"
+    (line, unfound_keywords) = _replace_from_map(line, optional_variable_re, replace_pattern)
+    for keyword in unfound_keywords:
+        logger.info("{} doesn't have any mapping for {} which is optional in {}".format(
+                device_name, keyword, filename))
+
+    # handle required variables
+    replace_pattern = "[[{}]]"
+    (line, unfound_keyword) = _replace_from_map(line, required_variable_re, replace_pattern)
+    for keyword in unfound_keywords:
+        logger.error("{} doesn't have any mapping for {} which is required in {}".format(
+                device_name, keyword, filename))
+        success = False
+
+    return (line, success)
+
+
+def replace_variables(path, device_name=None, device_vars={}):
+    '''This variable replacement is done on files being in a per device directory.
+
+    We handle variable substitution (only if device_name is provided)
+        [[VARIABLE]] are required variables. It will print an error and return as such (not interrupting though)
+        <<VARIABLE>> are optional variables. It will print an info and not return an error
+    '''
+    success = True
+    with open("{}.new".format(path),'w') as dest_f:
+        with open(path) as source_f:
+            for line in source_f:
+                (line, new_success) = _replace_line_content(line, path, device_name, device_vars)
+                success = new_success and success
+                dest_f.write(line)
+
+    os.rename("{}.new".format(path), path)
+    return success
