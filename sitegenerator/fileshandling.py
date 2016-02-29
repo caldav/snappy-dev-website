@@ -24,6 +24,8 @@ import logging
 import os
 import re
 
+from .tools import replace_file_inline
+
 logger = logging.getLogger(__name__)
 
 
@@ -109,24 +111,19 @@ def replace_variables(path, device_name=None, device_vars={}):
         <<VARIABLE>> are optional variables. It will print an info and not return an error
     '''
     success = True
-    with open("{}.new".format(path),'w') as dest_f:
-        with open(path) as source_f:
-            for line in source_f:
-                (line, new_success) = _replace_line_content(line, path, device_name, device_vars)
-                success = new_success and success
-                dest_f.write(line)
+    with replace_file_inline(path) as (source_f, dest_f):
+        for line in source_f:
+            (line, new_success) = _replace_line_content(line, path, device_name, device_vars)
+            success = new_success and success
+            dest_f.write(line)
 
-    os.rename("{}.new".format(path), path)
     return success
 
 
 def reformat_links(path):
     '''Strip down the final .md on any relative path in links as it will be replaced with real file names'''
-    with open("{}.new".format(path),'w') as dest_f:
-        with open(path) as source_f:
-            for line in source_f:
-                for link_to_replace in relative_markdown_links.findall(line):
-                    line = line.replace(link_to_replace, link_to_replace[:-3])
-                dest_f.write(line)
-
-    os.rename("{}.new".format(path), path)
+    with replace_file_inline(path) as (source_f, dest_f):
+        for line in source_f:
+            for link_to_replace in relative_markdown_links.findall(line):
+                line = line.replace(link_to_replace, link_to_replace[:-3])
+            dest_f.write(line)
