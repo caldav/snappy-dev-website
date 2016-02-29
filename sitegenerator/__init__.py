@@ -35,6 +35,8 @@ def main():
     '''Main entry point'''
     logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
 
+    success = True
+
     # Ensure that the generated directory doen't exist. If it exists, bails out
     if os.path.exists(settings.OUTPUT_DIR):
         logger.error("{} exists, please delete it first".format(settings.OUTPUT_DIR))
@@ -55,8 +57,6 @@ def main():
         # 1. Handle external branch imports (because other pages can import them)
         with tempfile.TemporaryDirectory() as tmp_dirname:
             success = import_git_external_branches(output_for_release_dir, tmp_dirname)
-        if not success:
-            sys.exit(1)
 
         # 2. Handle local directory and files copy + import statements in files
         for path, dirs, files in os.walk(settings.SITE_SRC):
@@ -74,3 +74,6 @@ def main():
         # 3. Copy and import from other branches
 
 
+    if not success:
+        logger.error("The site generation returned in error")
+        sys.exit(1)
