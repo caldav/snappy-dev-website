@@ -20,6 +20,7 @@
 
 '''General tools for handling files and metadata'''
 
+from contextlib import contextmanager
 import logging
 import os
 import sys
@@ -36,3 +37,13 @@ def next_relevant_line(f):
         if not line or line.startswith("#"):
             continue
         yield line.strip()
+
+
+@contextmanager
+def replace_file_inline(path):
+    '''Replace a file atomically creating a temp .new one'''
+    with open("{}.new".format(path),'w') as dest_f:
+        with open(path) as source_f:
+            yield (source_f, dest_f)
+
+    os.rename("{}.new".format(path), path)
