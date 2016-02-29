@@ -47,8 +47,19 @@ def main():
         logger.error("{} is required".format(settings.SITE_SRC))
         sys.exit(1)
 
+    # Handling unversioned doc from current branch
+    unversioned_src_dir = os.path.join(settings.SITE_SRC, "unversioned")
+    for path, dirs, files in os.walk(unversioned_src_dir):
+        for file_name in files:
+            file_path = os.path.join(path, file_name)
+            dest_path = file_path.replace(unversioned_src_dir, settings.OUTPUT_DIR)
+            os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+            if not import_and_copy_file(file_path, dest_path):
+                success = False
+
     # Loop and switch for each release context
     for release in get_releases_in_context():
+        versioned_src_dir = os.path.join(settings.SITE_SRC, "versioned")
         output_for_release_dir = os.path.join(settings.OUTPUT_DIR, release)
 
         # Load device metadata and variable substitution
@@ -56,14 +67,15 @@ def main():
 
         # 1. Handle external branch imports (because other pages can import them)
         with tempfile.TemporaryDirectory() as tmp_dirname:
-            success = import_git_external_branches(output_for_release_dir, tmp_dirname)
+            if not import_git_external_branches(output_for_release_dir, tmp_dirname):
+                success = False
 
         # 2. Handle local directory and files copy + import statements in files
-        for path, dirs, files in os.walk(settings.SITE_SRC):
+        for path, dirs, files in os.walk(versioned_src_dir):
             for file_name in files:
-                os.makedirs(path, exist_ok=True)
                 file_path = os.path.join(path, file_name)
-                dest_path = file_path.replace(settings.SITE_SRC, output_for_release_dir)
+                dest_path = file_path.replace(versioned_src_dir, output_for_release_dir)
+                os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                 if not import_and_copy_file(file_path, dest_path):
                     success = False
 
