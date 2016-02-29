@@ -67,6 +67,16 @@ def main():
                 if not import_and_copy_file(file_path, dest_path):
                     success = False
 
+        # 3. Do device variables and links replacement
+        for path, dirs, files in os.walk(output_for_release_dir):
+            for file_name in files:
+                file_path = os.path.join(path, file_name)
+                device_path_candidate = path.split("/")[:-1]
+                if device_path_candidate in devices:
+                    if not replace_variables(file_path, device_path_candidate, devices[device_path_candidate]):
+                        success = False
+                reformat_links(file_path)
+
 
 
         # 2. Handle get-started and prepend "this is part of the tour" link
