@@ -41,9 +41,18 @@ def next_relevant_line(f):
 
 @contextmanager
 def replace_file_inline(path):
-    '''Replace a file atomically creating a temp .new one'''
-    with open("{}.new".format(path), 'w') as dest_f:
-        with open(path) as source_f:
-            yield (source_f, dest_f)
+    '''Replace a file atomically creating a temp .new one
 
-    os.rename("{}.new".format(path), path)
+    Skip non text files'''
+
+    temp_file = "{}.new".format(path)
+    try:
+        with open(temp_file, 'w') as dest_f:
+            with open(path) as source_f:
+                yield (source_f, dest_f)
+        os.rename(temp_file, path)
+    except UnicodeDecodeError as e:
+        # That should be the case of any binary files
+        logger.debug("Couldn't replace in {}: {}".format(path, e))
+        os.remove(temp_file)
+
