@@ -4,20 +4,25 @@
 # site_path repo_url branch_name path_to_content_copy_in_branch
 
 # Snappy doc
-guides-and-reference/release/basic-usage/ https://github.com/ubuntu-core/snappy master docs/basic-usage/
-guides-and-reference/release/architecture/ https://github.com/ubuntu-core/snappy master docs/architecture/
-guides-and-reference/release/build-devices/ https://github.com/ubuntu-core/snappy master docs/build-devices/
-guides-and-reference/release/reference/snappy/ https://github.com/ubuntu-core/snappy master docs/reference/
+##guides-and-reference/release/basic-usage https://github.com/ubuntu-core/snappy master docs/basic-usage
+##guides-and-reference/release/architecture https://github.com/ubuntu-core/snappy master docs/architecture
+##guides-and-reference/release/build-devices https://github.com/ubuntu-core/snappy master docs/build-devices
+##guides-and-reference/release/reference/snappy https://github.com/ubuntu-core/snappy master docs/reference
 
 # Snapcraft doc
-guides-and-reference/release/build-apps/ https://github.com/ubuntu-core/snapcraft master docs/build-apps/
-guides-and-reference/release/reference/snapcraft/ https://github.com/ubuntu-core/snapcraft master docs/reference/
-examples/release/snapcraft-examples/ https://github.com/ubuntu-core/snapcraft master examples/
+##guides-and-reference/release/build-apps https://github.com/ubuntu-core/snapcraft master docs/build-apps
+##guides-and-reference/release/reference/snapcraft https://github.com/ubuntu-core/snapcraft master docs/reference
+##examples/release/snapcraft-examples https://github.com/ubuntu-core/snapcraft master examples
 
 # Ubuntu device flash doc?
 
 # Demos
-examples/release/demos/ https://github.com/ubuntu-core/demos master .
+examples/release/demos https://github.com/ubuntu-core/demos master .
 
 # Codelabs
 #examples/release/codelabs https://github.com/ubuntu-core/codelabs master .
+
+## TOREMOVE: demo/test content with existing structure
+guides-and-reference/release/architecture https://github.com/ubuntu-core/snappy master docs
+guides-and-reference/release/build-apps https://github.com/ubuntu-core/snapcraft master docs
+examples/release/snapcraft-examples https://github.com/ubuntu-core/snapcraft master examples
