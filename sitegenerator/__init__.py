@@ -56,6 +56,7 @@ def main():
             os.makedirs(os.path.dirname(dest_path), exist_ok=True)
             if not import_and_copy_file(file_path, dest_path):
                 success = False
+            reformat_links(file_path)
 
     # Loop and switch for each release context
     for release in get_releases_in_context():
