@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 def next_relevant_line(f):
-    '''return stripped relevant next line. Ignore comments and blank ones'''
+    '''Return stripped relevant next line. Ignore comments and blank ones'''
     for line in f:
         if not line or line.startswith("#"):
             continue

@@ -94,12 +94,10 @@ def main():
                 reformat_links(file_path)
 
 
+        # Handle get-started and prepend "this is part of the tour" link to existing pages
 
-        # 2. Handle get-started and prepend "this is part of the tour" link
-
-        # 3. Copy and import from other branches
 
 
     if not success:
-        logger.error("The site generation returned in error")
+        logger.error("The site generation returned an error")
         sys.exit(1)

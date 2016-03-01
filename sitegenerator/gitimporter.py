@@ -38,7 +38,6 @@ def import_git_external_branches(out_root_dir, temp_repos_dir, release):
     with open(os.path.join(ROOT_DIR, GIT_IMPORT_MAPPING)) as f:
         try:
             for line in next_relevant_line(f):
-                "guides-and-reference/reference/snapcraft/ https://github.com/ubuntu-core/snapcraft master docs/reference/"
                 (rel_dest_path, git_repo, branch_name, copy_path) = line.split(" ")
 
                 # create destination path, changing release with existing release

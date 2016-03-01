@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 def _get_supported_releases_map():
-    '''load supported release and master branch map'''
+    '''Load supported release and master branch map'''
     release_map = {}
     with open(os.path.join(ROOT_DIR, RELEASES_BRANCH_MAPPING)) as f:
         try:
@@ -53,7 +53,7 @@ def get_releases_in_context():
 
 
 def load_device_metadata():
-    """Return maps of variables subtition for each device.
+    """Return maps of variables substitution token for each device.
 
     Format is:
         { 'device-key':
