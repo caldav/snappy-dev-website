@@ -134,3 +134,37 @@ def reformat_links(path):
             for link_to_replace in relative_markdown_links.findall(line):
                 line = line.replace(link_to_replace, link_to_replace[:-3])
             dest_f.write(line)
+
+
+def import_from_generated_file(file_path):
+    '''We import inside a file generated html version of .md file
+
+        ##IMPORT_GENERATED_REPLACE <file_path> to copy generated html content into current file
+            (note: we don't handle IMPORT of IMPORT right now as we don't have this use case)
+        We remove the imported .md file
+
+    We return an error if we couldn't import all listed filed
+    '''
+    success = True
+    import_regexp = re.compile("##IMPORT_GENERATED_REPLACE (.*)")
+    with replace_file_inline(file_path) as (source_f, dest_f):
+        for line in source_f:
+            result = import_regexp.findall(line)
+            if result:
+                imported_path = os.path.join(os.path.dirname(file_path), result[0])
+                try:
+                    with open(imported_path) as import_f:
+                        # TODO do something like generate some html
+                        dest_f.write("<THIS IS HTML, TRUST ME>")
+                        for line_import in import_f:
+                            dest_f.write(line_import)
+                        dest_f.write("</THIS IS HTML, TRUST ME>")
+                        # We remove the imported source file
+                    os.remove(imported_path)
+                except FileNotFoundError:
+                    logger.error("Couldn't import generated {} from {}".format(imported_path, file_path))
+                    success = False
+            else:
+                dest_f.write(line)
+
+    return success
