@@ -93,10 +93,7 @@ def main():
                         success = False
                 reformat_links(file_path)
 
-
         # Handle get-started and prepend "this is part of the tour" link to existing pages
-
-
 
     if not success:
         logger.error("The site generation returned an error")

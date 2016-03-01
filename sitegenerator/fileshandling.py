@@ -47,7 +47,7 @@ def import_and_copy_file(source_path, destination_path):
     '''
     success = True
     import_regexp = re.compile("##IMPORT (.*)")
-    with open(destination_path,'w') as dest_f:
+    with open(destination_path, 'w') as dest_f:
         with open(source_path) as source_f:
             for line in source_f:
                 result = import_regexp.findall(line)
