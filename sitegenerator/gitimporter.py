@@ -31,7 +31,7 @@ from .settings import ROOT_DIR, GIT_IMPORT_MAPPING
 logger = logging.getLogger(__name__)
 
 
-def import_git_external_branches(out_root_dir, temp_repos_dir):
+def import_git_external_branches(out_root_dir, temp_repos_dir, release):
     '''Import and create needed path for each external git repository'''
 
     success = True
@@ -40,6 +40,9 @@ def import_git_external_branches(out_root_dir, temp_repos_dir):
             for line in next_relevant_line(f):
                 "guides-and-reference/reference/snapcraft/ https://github.com/ubuntu-core/snapcraft master docs/reference/"
                 (rel_dest_path, git_repo, branch_name, copy_path) = line.split(" ")
+
+                # create destination path, changing release with existing release
+                rel_dest_path = rel_dest_path.replace("release", release)
                 dest_path = os.path.join(out_root_dir, rel_dest_path)
                 os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 

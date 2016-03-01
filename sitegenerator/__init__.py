@@ -67,7 +67,7 @@ def main():
 
         # 1. Handle external branch imports (because other pages can import them)
         with tempfile.TemporaryDirectory() as tmp_dirname:
-            if not import_git_external_branches(output_for_release_dir, tmp_dirname):
+            if not import_git_external_branches(output_for_release_dir, tmp_dirname, release):
                 success = False
 
         # 2. Handle local directory and files copy + import statements in files
