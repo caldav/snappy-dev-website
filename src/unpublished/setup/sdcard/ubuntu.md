@@ -1,6 +1,6 @@
 # Setting up your device
 
-Download at [[URL_IMAGE]]
+Download at [[IMAGE_URL]]
 
 Insert SD card
 

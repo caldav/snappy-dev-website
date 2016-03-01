@@ -87,14 +87,14 @@ def _replace_line_content(line, filename, device_name, device_vars):
 
     # handle optional variables first
     replace_pattern = "<<{}>>"
-    (line, unfound_keywords) = _replace_from_map(line, optional_variable_re, replace_pattern)
+    (line, unfound_keywords) = _replace_from_map(line, optional_variable_re, replace_pattern, device_vars)
     for keyword in unfound_keywords:
         logger.info("{} doesn't have any mapping for {} which is optional in {}".format(
                 device_name, keyword, filename))
 
     # handle required variables
     replace_pattern = "[[{}]]"
-    (line, unfound_keyword) = _replace_from_map(line, required_variable_re, replace_pattern)
+    (line, unfound_keywords) = _replace_from_map(line, required_variable_re, replace_pattern, device_vars)
     for keyword in unfound_keywords:
         logger.error("{} doesn't have any mapping for {} which is required in {}".format(
                 device_name, keyword, filename))

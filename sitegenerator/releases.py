@@ -76,4 +76,5 @@ def load_device_metadata():
             (device_name, variable_name, *value) = line.split(" ")
             device_metadata = devices_metadata.get(device_name, {})
             device_metadata[variable_name] = " ".join(value)
+            devices_metadata[device_name] = device_metadata
     return devices_metadata

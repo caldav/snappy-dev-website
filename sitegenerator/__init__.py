@@ -87,7 +87,7 @@ def main():
                 continue
             for file_name in files:
                 file_path = os.path.join(path, file_name)
-                device_path_candidate = path.split("/")[:-1]
+                device_path_candidate = path.split("/")[-1]
                 if device_path_candidate in devices:
                     if not replace_variables(file_path, device_path_candidate, devices[device_path_candidate]):
                         success = False
