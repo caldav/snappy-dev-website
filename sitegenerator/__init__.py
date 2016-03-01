@@ -60,27 +60,30 @@ def main():
     # Loop and switch for each release context
     for release in get_releases_in_context():
         versioned_src_dir = os.path.join(settings.SITE_SRC, "versioned")
-        output_for_release_dir = os.path.join(settings.OUTPUT_DIR, release)
 
         # Load device metadata and variable substitution
         devices = load_device_metadata()
 
         # 1. Handle external branch imports (because other pages can import them)
         with tempfile.TemporaryDirectory() as tmp_dirname:
-            if not import_git_external_branches(output_for_release_dir, tmp_dirname, release):
+            if not import_git_external_branches(settings.OUTPUT_DIR, tmp_dirname, release):
                 success = False
 
         # 2. Handle local directory and files copy + import statements in files
         for path, dirs, files in os.walk(versioned_src_dir):
             for file_name in files:
                 file_path = os.path.join(path, file_name)
-                dest_path = file_path.replace(versioned_src_dir, output_for_release_dir)
+                # Replace the "release" keyword with the current release
+                dest_path = file_path.replace(versioned_src_dir, settings.OUTPUT_DIR).replace("release", release)
                 os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                 if not import_and_copy_file(file_path, dest_path):
                     success = False
 
         # 3. Do device variables and links replacement
-        for path, dirs, files in os.walk(output_for_release_dir):
+        for path, dirs, files in os.walk(settings.OUTPUT_DIR):
+            # Only process files in a path corresponding to this release
+            if not "/{}".format(release) in path:
+                continue
             for file_name in files:
                 file_path = os.path.join(path, file_name)
                 device_path_candidate = path.split("/")[:-1]
