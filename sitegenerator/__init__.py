@@ -26,7 +26,7 @@ import sys
 import tempfile
 
 from . import settings
-from .fileshandling import import_and_copy_file, prepend_part_of_tour, replace_variables, reformat_links
+from .fileshandling import import_and_copy_file, prepend_external_link, replace_variables, reformat_links
 from .gitimporter import import_git_external_branches
 from .releases import get_releases_in_context, load_device_metadata
 
@@ -106,7 +106,7 @@ def main():
                     dest_path = os.path.join(tour_base_path, release, dest_file_name)
                     relative_link = os.path.relpath(tour_base_path, os.path.dirname(src_path))
                     shutil.copy2(src_path, dest_path)
-                    prepend_part_of_tour(src_path, tour_type, relative_link)
+                    prepend_external_link(src_path, settings.PREPEND_TOUR_TEMPLATES[tour_type], relative_link)
 
     if not success:
         logger.error("The site generation returned an error")

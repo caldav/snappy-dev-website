@@ -138,15 +138,14 @@ def reformat_links(path):
             dest_f.write(line)
 
 
-def prepend_part_of_tour(path, tour_type, tour_url):
-    '''Prepend to existing page some known template based on tour type'''
+def prepend_external_link(path, message, url):
+    '''Prepend to existing page some known template type'''
 
-    tour_message = settings.PREPEND_TOUR_TEMPLATES[tour_type]
     with replace_file_inline(path) as (source_f, dest_f):
         line_count = 1
         for line in source_f:
             # add the message as a second line
             if line_count == 2:
-                dest_f.write("[{}]({})".format(tour_message, tour_url))
+                dest_f.write("[{}]({})\n".format(message, url))
             line_count += 1
             dest_f.write(line)
