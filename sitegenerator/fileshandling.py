@@ -160,7 +160,7 @@ def import_from_generated_file(file_path):
                         for line_import in import_f:
                             dest_f.write(line_import)
                         dest_f.write("</THIS IS HTML, TRUST ME>")
-                        # We remove the imported source file
+                    # We remove the imported source file
                     os.remove(imported_path)
                 except FileNotFoundError:
                     logger.error("Couldn't import generated {} from {}".format(imported_path, file_path))

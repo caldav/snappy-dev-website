@@ -25,9 +25,8 @@ from contextlib import contextmanager
 import logging
 import os
 import sys
-import subprocess
 
-from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING, OUTPUT_DIR
+from .settings import OUTPUT_DIR
 
 logger = logging.getLogger(__name__)
 
