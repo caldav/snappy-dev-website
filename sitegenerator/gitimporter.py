@@ -50,7 +50,7 @@ def import_git_external_branches(out_root_dir, temp_repos_dir, release):
                 if not os.path.isdir(repo_mirror):
                     subprocess.check_call(["git", "clone", "-q", "-n", git_repo], cwd=os.path.dirname(repo_mirror))
                 subprocess.check_call(["git", "checkout", "-q", branch_name], cwd=repo_mirror)
-                shutil.copytree(os.path.join(repo_mirror, copy_path), dest_path)
+                shutil.copytree(os.path.join(repo_mirror, copy_path), dest_path, ignore=lambda src, names: [".git"])
         except ValueError:
             logger.error("Import file is not of valid format: <site_path> <repo_url> <branch_name> "
                          "<path_to_content_copy_in_branch>")
