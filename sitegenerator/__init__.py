@@ -27,7 +27,7 @@ import tempfile
 
 from . import settings
 from .fileshandling import import_and_copy_file, prepend_external_link, replace_variables, reformat_links
-from .gitimporter import import_git_external_branches
+from .gitimporter import import_git_external_branches, find_imported_branch_metadata
 from .releases import get_releases_in_context, load_device_metadata
 
 logger = logging.getLogger(__name__)
@@ -107,6 +107,20 @@ def main():
                     relative_link = os.path.relpath(tour_base_path, os.path.dirname(src_path))
                     shutil.copy2(src_path, dest_path)
                     prepend_external_link(src_path, settings.PREPEND_TOUR_TEMPLATES[tour_type], relative_link)
+
+        # 5. Rename landing pages (for examples, demos, codelabs) and stick URL if anything found
+        for path, dirs, files in os.walk(settings.OUTPUT_DIR):
+            # Only process files in a path corresponding to this release
+            if not "/{}".format(release) in path:
+                continue
+            if "index.md" in files or "index.html" in files:
+                continue
+            if "README.md" in files:
+                dest_file = os.path.join(path, "index.md")
+                os.rename(os.path.join(path, "README.md"), dest_file)
+                url = find_imported_branch_metadata(path, settings.OUTPUT_DIR)
+                if url:
+                    prepend_external_link(dest_file, "This content is available for checkout", url)
 
     if not success:
         logger.error("The site generation returned an error")
