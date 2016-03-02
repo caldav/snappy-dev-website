@@ -113,7 +113,7 @@ def main():
             device = device_path.split("/")[-1]
             for file in os.listdir(device_path):
                 src_path = os.path.join(device_path, file)
-                dest_file_name = "step-setup-{}-{}".format(device, file)
+                dest_file_name = "step2-setup-{}-{}".format(device, file)
                 dest_path = os.path.join(settings.OUTPUT_DIR, "get-started", "as-dev", release, dest_file_name)
                 if not generate_device_get_started_instruction_setup(settings.SETUP_TEMPLATE_PATH, src_path, dest_path):
                     success = False
