@@ -106,14 +106,14 @@ def main():
                 if file_path.endswith(".md"):
                     continue
                 # Import from html fake template some md that we convert in html first
-                if not import_from_generated_file(file_path):
-                    success = False
+                #if not import_from_generated_file(file_path):
+                #    success = False
         # Per device specific setup instruction
         for device_path in glob.glob(os.path.join(settings.OUTPUT_DIR, "guides-and-reference", release, "setup", "*")):
             device = device_path.split("/")[-1]
             for file in os.listdir(device_path):
                 src_path = os.path.join(device_path, file)
-                dest_file_name = "step-setup-{}-{}".format(device, file.replace(".md", ""))
+                dest_file_name = "step-setup-{}-{}".format(device, file)
                 dest_path = os.path.join(settings.OUTPUT_DIR, "get-started", "as-dev", release, dest_file_name)
                 if not generate_device_get_started_instruction_setup(settings.SETUP_TEMPLATE_PATH, src_path, dest_path):
                     success = False

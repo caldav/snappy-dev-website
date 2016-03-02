@@ -175,7 +175,8 @@ def generate_device_get_started_instruction_setup(template_path, src_path, dest_
     '''Generate get started tour per device specific setup page
 
     TODO: factorize the 3 import tags in one function once we know if we only generate markdown or not'''
-    shutil.copy2(template_path, dest_path)
+    shutil.copy2(src_path, dest_path)
+    return True
     success = True
     import_regexp = re.compile("##IMPORT_SETUP_DEVICE")
     with replace_file_inline(dest_path) as (source_f, dest_f):
