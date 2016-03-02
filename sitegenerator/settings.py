@@ -31,3 +31,9 @@ OUTPUT_DIR = os.path.join(ROOT_DIR, "out")
 RELEASES_BRANCH_MAPPING = "releases"
 GIT_IMPORT_MAPPING = "import-mapping"
 VARIABLES_MAPPING = "variables-mapping"
+
+PREPEND_TOUR_TEMPLATES = {
+    "as-dev": "This content is part of the snappy developer tour, feel free to hop on it!",
+    # "as-devops": "This content is part of the snappy devops tour, feel free to hop on it!",
+    # "as-boardmaker": "This content is part of the snappy board maker tour, feel free to hop on it!"
+}

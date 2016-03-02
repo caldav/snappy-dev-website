@@ -26,6 +26,7 @@ import re
 import shutil
 
 from .tools import replace_file_inline
+from . import settings
 
 logger = logging.getLogger(__name__)
 
@@ -134,4 +135,18 @@ def reformat_links(path):
         for line in source_f:
             for link_to_replace in relative_markdown_links.findall(line):
                 line = line.replace(link_to_replace, link_to_replace[:-3])
+            dest_f.write(line)
+
+
+def prepend_part_of_tour(path, tour_type, tour_url):
+    '''Prepend to existing page some known template based on tour type'''
+
+    tour_message = settings.PREPEND_TOUR_TEMPLATES[tour_type]
+    with replace_file_inline(path) as (source_f, dest_f):
+        line_count = 1
+        for line in source_f:
+            # add the message as a second line
+            if line_count == 2:
+                dest_f.write("[{}]({})".format(tour_message, tour_url))
+            line_count += 1
             dest_f.write(line)

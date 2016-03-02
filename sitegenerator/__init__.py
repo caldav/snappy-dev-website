@@ -26,7 +26,7 @@ import sys
 import tempfile
 
 from . import settings
-from .fileshandling import import_and_copy_file, replace_variables, reformat_links
+from .fileshandling import import_and_copy_file, prepend_part_of_tour, replace_variables, reformat_links
 from .gitimporter import import_git_external_branches
 from .releases import get_releases_in_context, load_device_metadata
 
@@ -101,9 +101,12 @@ def main():
             for file in os.listdir(device_path):
                 src_path = os.path.join(device_path, file)
                 dest_file_name = "step2-setup-{}-{}".format(device, file)
-                dest_path = os.path.join(settings.OUTPUT_DIR, "get-started", "as-dev", release, dest_file_name)
-                shutil.copy2(src_path, dest_path)
-            # TODO: add the "this is part of the tour" stenza
+                for tour_type in settings.PREPEND_TOUR_TEMPLATES:
+                    tour_base_path = os.path.join(settings.OUTPUT_DIR, "get-started", tour_type)
+                    dest_path = os.path.join(tour_base_path, release, dest_file_name)
+                    relative_link = os.path.relpath(tour_base_path, os.path.dirname(src_path))
+                    shutil.copy2(src_path, dest_path)
+                    prepend_part_of_tour(src_path, tour_type, relative_link)
 
     if not success:
         logger.error("The site generation returned an error")
