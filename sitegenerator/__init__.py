@@ -25,7 +25,7 @@ import sys
 import tempfile
 
 from . import settings
-from .fileshandling import import_and_copy_file, import_from_generated_file, replace_variables, reformat_links, \
+from .fileshandling import import_and_copy_file, replace_variables, reformat_links, \
     generate_device_get_started_instruction_setup
 from .gitimporter import import_git_external_branches
 from .releases import get_releases_in_context, load_device_metadata
@@ -96,18 +96,6 @@ def main():
                 reformat_links(file_path)
 
         # 4. Handle get-started and prepend "this is part of the tour" link (TODO!) to existing pages
-        for path, dirs, files in os.walk(os.path.join(settings.OUTPUT_DIR, "get-started")):
-            # Only process files in a path corresponding to this release
-            if not "/{}".format(release) in path:
-                continue
-            for file_name in files:
-                file_path = os.path.join(path, file_name)
-                # We ignore .md file here, only interested (for now) at the html templates
-                if file_path.endswith(".md"):
-                    continue
-                # Import from html fake template some md that we convert in html first
-                #if not import_from_generated_file(file_path):
-                #    success = False
         # Per device specific setup instruction
         for device_path in glob.glob(os.path.join(settings.OUTPUT_DIR, "guides-and-reference", release, "setup", "*")):
             device = device_path.split("/")[-1]
