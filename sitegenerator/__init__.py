@@ -21,12 +21,12 @@
 import glob
 import logging
 import os
+import shutil
 import sys
 import tempfile
 
 from . import settings
-from .fileshandling import import_and_copy_file, replace_variables, reformat_links, \
-    generate_device_get_started_instruction_setup
+from .fileshandling import import_and_copy_file, replace_variables, reformat_links
 from .gitimporter import import_git_external_branches
 from .releases import get_releases_in_context, load_device_metadata
 
@@ -95,16 +95,15 @@ def main():
                         success = False
                 reformat_links(file_path)
 
-        # 4. Handle get-started and prepend "this is part of the tour" link (TODO!) to existing pages
-        # Per device specific setup instruction
+        # 4. Handle get-started and prepend "this is part of the tour" link
         for device_path in glob.glob(os.path.join(settings.OUTPUT_DIR, "guides-and-reference", release, "setup", "*")):
             device = device_path.split("/")[-1]
             for file in os.listdir(device_path):
                 src_path = os.path.join(device_path, file)
                 dest_file_name = "step2-setup-{}-{}".format(device, file)
                 dest_path = os.path.join(settings.OUTPUT_DIR, "get-started", "as-dev", release, dest_file_name)
-                if not generate_device_get_started_instruction_setup(settings.SETUP_TEMPLATE_PATH, src_path, dest_path):
-                    success = False
+                shutil.copy2(src_path, dest_path)
+            # TODO: add the "this is part of the tour" stenza
 
     if not success:
         logger.error("The site generation returned an error")

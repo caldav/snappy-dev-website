@@ -24,7 +24,6 @@ import os
 
 ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
 SITE_SRC = os.path.join(ROOT_DIR, "src")
-SETUP_TEMPLATE_PATH = os.path.join(SITE_SRC, "unpublished", "get-started", "as-dev", "step-device-setup-template.html")
 
 OUTPUT_DIR = os.path.join(ROOT_DIR, "out")
 
