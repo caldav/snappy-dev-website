@@ -169,3 +169,30 @@ def import_from_generated_file(file_path):
                 dest_f.write(line)
 
     return success
+
+
+def generate_device_get_started_instruction_setup(template_path, src_path, dest_path):
+    '''Generate get started tour per device specific setup page
+
+    TODO: factorize the 3 import tags in one function once we know if we only generate markdown or not'''
+    shutil.copy2(template_path, dest_path)
+    success = True
+    import_regexp = re.compile("##IMPORT_SETUP_DEVICE")
+    with replace_file_inline(dest_path) as (source_f, dest_f):
+        for line in source_f:
+            result = import_regexp.findall(line)
+            if result:
+                try:
+                    with open(src_path) as import_f:
+                        # TODO do something like generate some html
+                        dest_f.write("<THIS IS HTML, TRUST ME>")
+                        for line_import in import_f:
+                            dest_f.write(line_import)
+                        dest_f.write("</THIS IS HTML, TRUST ME>")
+                except FileNotFoundError:
+                    logger.error("Couldn't import generated {} from {}".format(src_path, dest_path))
+                    success = False
+            else:
+                dest_f.write(line)
+
+    return success

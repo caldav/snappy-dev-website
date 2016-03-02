@@ -24,7 +24,8 @@ import sys
 import tempfile
 
 from . import settings
-from .fileshandling import import_and_copy_file, import_from_generated_file, replace_variables, reformat_links
+from .fileshandling import import_and_copy_file, import_from_generated_file, replace_variables, reformat_links, \
+    generate_device_get_started_instruction_setup
 from .gitimporter import import_git_external_branches
 from .releases import get_releases_in_context, load_device_metadata
 
@@ -105,6 +106,15 @@ def main():
                     continue
                 # Import from html fake template some md that we convert in html first
                 if not import_from_generated_file(file_path):
+                    success = False
+        # Per device specific setup instruction
+        for device_path in glob.glob(os.path.join(settings.OUTPUT_DIR, "guides-and-reference", release, "setup", "*")):
+            device = device_path.split("/")[-1]
+            for file in os.listdir(device_path):
+                src_path = os.path.join(device_path, file)
+                dest_file_name = "step-setup-{}-{}".format(device, file.replace(".md", ""))
+                dest_path = os.path.join(settings.OUTPUT_DIR, "get-started", "as-dev", release, dest_file_name)
+                if not generate_device_get_started_instruction_setup(settings.SETUP_TEMPLATE_PATH, src_path, dest_path):
                     success = False
 
     if not success:
