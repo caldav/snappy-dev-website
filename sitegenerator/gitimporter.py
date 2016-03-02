@@ -26,7 +26,7 @@ import shutil
 import subprocess
 
 from .tools import next_relevant_line
-from .settings import ROOT_DIR, GIT_IMPORT_MAPPING
+from .settings import ROOT_DIR, GIT_IMPORT_MAPPING, IMPORT_URL_NAME
 
 logger = logging.getLogger(__name__)
 
@@ -51,8 +51,25 @@ def import_git_external_branches(out_root_dir, temp_repos_dir, release):
                     subprocess.check_call(["git", "clone", "-q", "-n", git_repo], cwd=os.path.dirname(repo_mirror))
                 subprocess.check_call(["git", "checkout", "-q", branch_name], cwd=repo_mirror)
                 shutil.copytree(os.path.join(repo_mirror, copy_path), dest_path, ignore=lambda src, names: [".git"])
+                open(os.path.join(dest_path, IMPORT_URL_NAME), "w").write("{}/tree/{}/{}".format(git_repo, branch_name,
+                                                                                                 copy_path))
         except ValueError:
             logger.error("Import file is not of valid format: <site_path> <repo_url> <branch_name> "
                          "<path_to_content_copy_in_branch>")
             success = False
     return success
+
+
+def find_imported_branch_metadata(path, root_dir):
+    '''Find if the current path is an imported branch, and if so, get the link to it'''
+    cur_path = path
+    while (os.path.abspath(cur_path) != os.path.dirname(root_dir) and
+            os.path.abspath(cur_path) != os.path.dirname(cur_path)):
+        try:
+            branch_link = open(os.path.join(cur_path, IMPORT_URL_NAME)).read()
+            return os.path.normpath(os.path.join(branch_link, os.path.relpath(path, cur_path)))
+        except FileNotFoundError:
+            pass
+        cur_path = os.path.dirname(path)
+
+    return None
