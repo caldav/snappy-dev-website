@@ -20,13 +20,14 @@
 
 '''General tools for handling files and metadata'''
 
+import argparse
 from contextlib import contextmanager
 import logging
 import os
 import sys
 import subprocess
 
-from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING
+from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING, OUTPUT_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -56,3 +57,23 @@ def replace_file_inline(path):
         logger.debug("Couldn't replace in {}: {}".format(path, e))
         os.remove(temp_file)
 
+
+def setup_args():
+    '''Handle CLI arg setup'''
+    parser = argparse.ArgumentParser(description="Generate in the {} directory the developer website "
+                                                 "content, fetching from different sources.".format(OUTPUT_DIR))
+    parser.add_argument("-v", "--verbose", action="count", default=0, help="Increase output verbosity (2 levels)")
+    parser.add_argument("-d", "--debug", action="store_true", help="Max verbose output (2nd level)")
+
+    args = parser.parse_args(sys.argv[1:])
+    setup_logging_level(args)
+
+
+def setup_logging_level(args):
+    level = logging.WARNING
+    if args.verbose == 1:
+        level = logging.INFO
+    if args.verbose > 1 or args.debug:
+        level = logging.DEBUG
+
+    logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
