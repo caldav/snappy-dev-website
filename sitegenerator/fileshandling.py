@@ -31,8 +31,8 @@ from . import settings
 logger = logging.getLogger(__name__)
 
 
-required_variable_re = re.compile('\[\[(.[^\]]*)\]\]')
-optional_variable_re = re.compile('\<\<(.[^>]*)\>\>')
+required_variable_re = re.compile('\[\[([^\[\]]*)\]\]')
+optional_variable_re = re.compile('\<\<([^<>]*)\>\>')
 
 relative_markdown_links = re.compile("\(((?!http|www).[^\)]*\.md)\)")
 
