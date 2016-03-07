@@ -1,13 +1,36 @@
-# Setting up your device
+# Setting up your [[DEVICE_NAME]]
 
-Download at [[IMAGE_URL]]
+![[[DEVICE_NAME]] image]([[DEVICE_IMG_URL]] "[[DEVICE_NAME]] image")
 
-Insert SD card
+From your ubuntu desktop computer, you can download and install a pre-built Snappy Ubuntu Core [[RELEASE_VERSION]] image for your [[DEVICE_NAME]] and copy it to an SD card ready to boot.
 
-Put the SD card in your device
+> Make sure your board is connected to the same network as your computer to manage Ubuntu Core remotely via SSH, or has a screen and keyboard attached if you prefer managing Ubuntu Core directly on the board.
 
-Boot it
+## Downloading and installing
 
-Connect to use using with browsing to webdm.local
+1. Start by **downloading the Ubuntu Core image** for Raspberry Pi 2 in your current folder.
+```sh
+wget [[IMAGE_URL]]
+```
 
-<<SPECIFIC_BOOT>>
+1. **Insert your SD card**. Ensure there is no data you care about on the SD card before running the commands below.
+
+1. **Unmount it**: if your SD card is mounted when you insert it into your computer (you will know it if the file manager automatically opens a window showing the card's contents), you must manually unmount it before writing the snappy image to it. Either eject your SD card from the file manager, or from the command line: `sudo umount /media/$USER/`
+
+1. **Copy your downloaded image to the SD card**. You must specify the path to the disk device representing your SD card in the dd command below. Common device paths for the SD card disk device are either of the form **/dev/sdX** (such as **/dev/sdb**, not /dev/sdb1!) or **/dev/mmcblk0** (not /dev/mmcblk0p1!)
+```sh
+xzcat [[IMAGE_FILENAME]] | sudo dd of=/dev/sdX bs=32M
+sync
+```
+
+1. **Eject** the SD card physically from your PC and **insert it** in your [[DEVICE_NAME]].
+
+## First login to Ubuntu Core
+
+Power on your [[DEVICE_NAME]] and wait a couple of minutes for the OS to complete its first boot. You can then access your snappy Ubuntu Core system either directly with a keyboard and display connected, or through SSH:
+```sh
+ssh ubuntu@webdm.local
+```
+The default *password* is **ubuntu**.
+
+Congrats! You just installed your new Snappy Ubuntu Core [[RELEASE_VERSION]] system!
