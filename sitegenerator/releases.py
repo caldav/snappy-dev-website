@@ -24,6 +24,7 @@ import logging
 import os
 import sys
 import subprocess
+import yaml
 
 from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING, VARIABLES_MAPPING
 from .tools import next_relevant_line
@@ -69,12 +70,5 @@ def load_device_metadata():
           'dragonboard': {'FOO': 'BAR },
         }"""
 
-    devices_metadata = {}
     with open(os.path.join(ROOT_DIR, VARIABLES_MAPPING)) as f:
-        for line in next_relevant_line(f):
-            # note that we may have spaces in value
-            (device_name, variable_name, *value) = line.split(" ")
-            device_metadata = devices_metadata.get(device_name, {})
-            device_metadata[variable_name] = " ".join(value)
-            devices_metadata[device_name] = device_metadata
-    return devices_metadata
+        return yaml.load(f.read())
