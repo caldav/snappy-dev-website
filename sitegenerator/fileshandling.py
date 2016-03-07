@@ -146,6 +146,6 @@ def prepend_external_link(path, message, url):
         for line in source_f:
             # add the message as a second line
             if line_count == 2:
-                dest_f.write("[{}]({})\n".format(message, url))
+                dest_f.write("> [{}]({})\n".format(message, url))
             line_count += 1
             dest_f.write(line)
