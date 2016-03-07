@@ -2,8 +2,10 @@
 # Those are per device specific instructions. Format in the markdown is:
 # Optional variable substitution (will only trigger an info log): <<IMAGE_URL>>
 # Required variable substitution (will trigger an error log, exit will be 1): [[IMAGE_URL]]
-# Format is:
-# device (name as in setup/) variable value
-rpi2 IMAGE_URL https://download.ubuntu.com/blablabnla/rpi2-16.04.iso
-rpi2 SPECIFIC_BOOT The red light is available at…
-dragonboard IMAGE_URL https://download.ubuntu.com/foo/dragon-16.04.iso
+# Format is a yaml file, where primary key is the device id (used in url), and then key: value mapping, where key
+# is used is the variable used in expanded files.
+rpi2:
+  DEVICE_NAME: Raspberry Pi 2
+  IMAGE_URL: https://download.ubuntu.com/blablabnla/rpi2-16.04.iso
+dragonboard:
+  IMAGE_URL https://download.ubuntu.com/foo/dragon-16.04.iso
