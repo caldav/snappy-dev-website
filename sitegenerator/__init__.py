@@ -65,7 +65,7 @@ def main():
         versioned_src_dir = os.path.join(settings.SITE_SRC, "versioned")
 
         # Load device metadata and variable substitution
-        devices = load_device_metadata()
+        devices = load_device_metadata(release)
 
         # 1. Handle external branch imports (because other pages can import them)
         with tempfile.TemporaryDirectory() as tmp_dirname:

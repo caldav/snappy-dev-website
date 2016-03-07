@@ -53,8 +53,11 @@ def get_releases_in_context():
         yield release
 
 
-def load_device_metadata():
+def load_device_metadata(release):
     """Return maps of variables substitution token for each device.
+
+    Adding RELEASE_VERSION and IMAGE_FILENAME (if IMAGE_URL present) automatically to each
+    device for convenience.
 
     Format is:
         { 'device-key':
@@ -66,9 +69,17 @@ def load_device_metadata():
 
         Example:
         { 'rpi2': {'IMAGE_URL': 'https://download.ubuntu.com/blablabnla/rpi2-16.04.iso',
-                   'LOGO_URL': 'rpi2.png'},
-          'dragonboard': {'FOO': 'BAR },
+                   'IMAGE_FILENAME': 'rpi2-16.04.iso',
+                   'RELEASE_VERSION': '16.04' },
+          'dragonboard': {'FOO': 'BAR',
+                          'RELEAS_VERSION': '16.04' },
         }"""
-
+    devices_metadata = {}
     with open(os.path.join(ROOT_DIR, VARIABLES_MAPPING)) as f:
-        return yaml.load(f.read())
+        devices_metadata = yaml.load(f.read())
+    for device_key in devices_metadata:
+        devices_metadata[device_key]['RELEASE_VERSION'] = release
+        image_url = devices_metadata[device_key].get('IMAGE_URL')
+        if image_url:
+            devices_metadata[device_key]['IMAGE_FILENAME'] = os.path.basename(image_url)
+    return devices_metadata
