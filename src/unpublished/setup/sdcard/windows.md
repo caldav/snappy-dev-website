@@ -13,13 +13,13 @@ Once the download is finished, you’ll have a zip file named [[IMAGE_FILENAME]]
 1. **Copy your downloaded image to the SD card**. Install and launch [Win32DiskImager](http://sourceforge.net/projects/win32diskimager/files/latest/download).
  > Find out where what drive your SD card is mounted to. Open a File Explorer window to check which drive your SD card is listed under.  Here is an example of a card listed under **E:** and the setup in Diskimager.
 
- ![Windows drives](https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/unpublished/img/setup/windows-drives.png)
+ ![Windows drives](https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/setup/windows-drives.png)
 
   Win32DiskImager will need 2 elements:
    * *An Image File* which is the file you want to copy on your SD Card. Navigate to your *Downloads* folder and select the [[IMAGE_UNCOMPRESSED_FILENAME]] image you have just extracted.
    * *A Device* which is the location of your SD card. Select the Drive in which your SD card is mounted.
 
-   ![Win32DiskImager image selection](https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/unpublished/img/setup/windows-diskimager-setup.png)
+   ![Win32DiskImager image selection](https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/setup/windows-diskimager-setup.png)
 
   > To be safe, unplug every External USB Drive you may have connected to your PC.
 

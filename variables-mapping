@@ -6,7 +6,7 @@
 # is used is the variable used in expanded files.
 rpi2:
   DEVICE_NAME: Raspberry Pi 2
-  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/unpublished/img/devices/raspberry-pi.png
+  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/raspberry-pi.png
   IMAGE_URL: http://people.canonical.com/~mvo/all-snaps/rpi2-all-snap.img.xz
 
 #dragonboard:
