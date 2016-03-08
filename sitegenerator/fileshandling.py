@@ -55,6 +55,9 @@ def import_and_copy_file(source_path, destination_path):
         # Fall back to direct copy for binary files
         logger.debug("Directly copy as can't read {} as text: {}".format(source_path, e))
         shutil.copy2(source_path, destination_path)
+    except FileNotFoundError:
+        logger.error("Couldn't open {}".format(source_path))
+        success = False
     return success
 
 
