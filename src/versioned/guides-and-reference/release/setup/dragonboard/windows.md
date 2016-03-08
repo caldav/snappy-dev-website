@@ -1,0 +1,1 @@
+../../../../../unpublished/setup/sdcard/windows.md

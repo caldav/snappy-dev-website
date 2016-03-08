@@ -8,6 +8,10 @@ rpi2:
   DEVICE_NAME: Raspberry Pi 2
   DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/raspberry-pi.png
   IMAGE_URL: http://people.canonical.com/~mvo/all-snaps/rpi2-all-snap.img.xz
+dragonboard:
+  DEVICE_NAME: DragonBoard
+  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/dragonboard.png
+  IMAGE_URL: http://people.canonical.com/~ogra/snappy/all-snaps/dragonboard/dragon-all-snap.img.xz
 intel-nuc:
   DEVICE_NAME: Intel® NUC
   DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/Thin_Canyon_NUC_Front_Angle_Board.png
