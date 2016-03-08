@@ -1,10 +1,4 @@
-# Setting up your [[DEVICE_NAME]]
-
-![[[DEVICE_NAME]] image]([[DEVICE_IMG_URL]] "[[DEVICE_NAME]] image")
-
-From your ubuntu desktop computer, you can download and install a pre-built Snappy Ubuntu Core [[RELEASE_VERSION]] image for your [[DEVICE_NAME]] and copy it to an SD card ready to boot.
-
-> Make sure your board is connected to the same network as your computer to manage Ubuntu Core remotely via SSH, or has a screen and keyboard attached if you prefer managing Ubuntu Core directly on the board.
+##IMPORT setup-intro.md
 
 ## Downloading and installing
 
@@ -26,3 +20,5 @@ sync
 1. **Eject** the SD card physically from your PC and **insert it** in your [[DEVICE_NAME]].
 
 ##IMPORT ../first_login.md
+
+##IMPORT ../setup-outro.md

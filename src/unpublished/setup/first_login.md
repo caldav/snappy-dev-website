@@ -5,5 +5,3 @@ Power on your [[DEVICE_NAME]] and wait a couple of minutes for the OS to complet
 ssh ubuntu@webdm.local
 ```
 The default *password* is **ubuntu**.
-
-Congrats! You just installed your new Snappy Ubuntu Core [[RELEASE_VERSION]] system!
