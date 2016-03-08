@@ -26,7 +26,6 @@ import re
 import shutil
 
 from .tools import replace_file_inline
-from . import settings
 
 logger = logging.getLogger(__name__)
 
