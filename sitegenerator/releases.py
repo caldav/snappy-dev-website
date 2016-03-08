@@ -56,8 +56,8 @@ def get_releases_in_context():
 def load_device_metadata(release):
     """Return maps of variables substitution token for each device.
 
-    Adding RELEASE_VERSION and IMAGE_FILENAME (if IMAGE_URL present) automatically to each
-    device for convenience.
+    Adding RELEASE_VERSION automatically to each device for convenience.
+    IMAGE_FILENAME and IMAGE_UNCOMPRESSED_FILENAME are also aded if IMAGE_URL is present.
 
     Format is:
         { 'device-key':
@@ -82,4 +82,6 @@ def load_device_metadata(release):
         image_url = devices_metadata[device_key].get('IMAGE_URL')
         if image_url:
             devices_metadata[device_key]['IMAGE_FILENAME'] = os.path.basename(image_url)
+            devices_metadata[device_key]['IMAGE_UNCOMPRESSED_FILENAME'] = \
+                os.path.basename(os.path.splitext(image_url)[0])
     return devices_metadata
