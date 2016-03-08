@@ -57,7 +57,7 @@ def import_and_copy_file(source_path, destination_path):
                     if result:
                         path = result[0]
                         try:
-                            with open(os.path.join(os.path.dirname(source_path), path)) as import_f:
+                            with open(os.path.join(os.path.dirname(os.path.realpath(source_path)), path)) as import_f:
                                 for line_import in import_f:
                                     dest_f.write(line_import)
                         except FileNotFoundError:
