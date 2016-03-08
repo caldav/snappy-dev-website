@@ -8,6 +8,22 @@ rpi2:
   DEVICE_NAME: Raspberry Pi 2
   DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/raspberry-pi.png
   IMAGE_URL: http://people.canonical.com/~mvo/all-snaps/rpi2-all-snap.img.xz
-
+intel-nuc:
+  DEVICE_NAME: Intel® NUC
+  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/Thin_Canyon_NUC_Front_Angle_Board.png
+  IMAGE_URL: http://people.canonical.com/~platform/snappy/ubuntu-core-15.04-intel-nuc.img.xz
+  BOOT_SELECT_KEY: F10
+  BIOS_INSTRUCTIONS: |
+    ### Preparing the NUC (if using internal ROM as disk)
+    > Note that this step is only necessary in case you want to install Ubuntu Core on the 4GB eMMC Built-In Storage.
+    If you wired an ssd disk to your NUC, this section can be skipped.
+    1. Start your NUC by pressing the On button while pressing F2 during the boot up, this will open the BIOS settings.
+    1. On the initial screen, access the "advanced" tab and press to access the "Devices and Peripherals" Tab.
+    1. On the "Devices and Peripherals" menu, under the "On board devices" submenu, make sure that the emmc checkbox ("4GB emmc Built-in Storage") is checked.
+      > If you didn't find this option, this means that you need to update your NUC BIOS to latest version. For this, you can follow online instructions on the [Intel website](http://www.intel.com/content/www/us/en/support/boards-and-kits/000005850.html).
+    1. In the "Boot" menu, "Secure boot" submenu, make sure that the "secure boot" is not checked.
+  EMMC_DISK_INSTRUCTIONS: >
+    Please note that if you want to use the eMMC instead of an internal ssd drive, replace **/dev/sdX** by **/dev/mmcblk0**
+    which refers to the eMMC option.
 #dragonboard:
 #  IMAGE_URL: https://download.ubuntu.com/foo/dragon-16.04.iso
