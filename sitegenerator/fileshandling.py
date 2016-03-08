@@ -30,6 +30,7 @@ from . import settings
 
 logger = logging.getLogger(__name__)
 
+import_re = re.compile("##IMPORT (.*)")
 
 required_variable_re = re.compile('\[\[([^\[\]]*)\]\]')
 optional_variable_re = re.compile('\<\<([^<>]*)\>\>')
@@ -43,33 +44,39 @@ def import_and_copy_file(source_path, destination_path):
     We handle:
         1. symlinks are replaced with real files
         2. ##IMPORT <file_path> to copy destination file content into current file
-            (note: we don't handle IMPORT of IMPORT right now as we don't have this use case)
 
     We return an error if we couldn't copy or import all listed filed
     '''
     success = True
-    import_regexp = re.compile("##IMPORT (.*)")
     try:
         with open(destination_path, 'w') as dest_f:
             with open(source_path) as source_f:
-                for line in source_f:
-                    result = import_regexp.findall(line)
-                    if result:
-                        path = result[0]
-                        try:
-                            with open(os.path.join(os.path.dirname(os.path.realpath(source_path)), path)) as import_f:
-                                for line_import in import_f:
-                                    dest_f.write(line_import)
-                        except FileNotFoundError:
-                            logger.error("Couldn't import {} from {}".format(path, source_path))
-                            success = False
-                    else:
-                        dest_f.write(line)
+                success = _copycontent_withimports_tag(source_f, dest_f)
     except UnicodeDecodeError as e:
         # Fall back to direct copy for binary files
         logger.debug("Directly copy as can't read {} as text: {}".format(source_path, e))
         shutil.copy2(source_path, destination_path)
+    return success
 
+
+def _copycontent_withimports_tag(source_f, dest_f):
+    '''Copy content from one file to the other, handling import tags
+
+    imports within imports are handled, as well as symlinks chaining'''
+    success = True
+    for line in source_f:
+        result = import_re.findall(line)
+        if result:
+            rel_path = result[0]
+            try:
+                with open(os.path.join(os.path.dirname(os.path.realpath(source_f.name)), rel_path)) as import_f:
+                    if not _copycontent_withimports_tag(import_f, dest_f):
+                        success = False
+            except FileNotFoundError:
+                logger.error("Couldn't import {} from {}".format(rel_path, source_f.name))
+                success = False
+        else:
+            dest_f.write(line)
     return success
 
 
