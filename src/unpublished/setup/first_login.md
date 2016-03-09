@@ -7,3 +7,5 @@ ssh ubuntu@webdm.local
 The default *password* is **ubuntu**.
 
 > Note that the first boot can be longer than usual as your primary disk is repartioned to take all available free space.
+
+<<ADDITIONAL_FIRST_BOOT_NOTES>>

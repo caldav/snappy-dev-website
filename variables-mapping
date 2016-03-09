@@ -12,6 +12,14 @@ dragonboard:
   DEVICE_NAME: DragonBoard
   DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/dragonboard.png
   IMAGE_URL: http://people.canonical.com/~ogra/snappy/all-snaps/dragonboard/dragon-all-snap.img.xz
+beaglebone:
+    DEVICE_NAME: Beaglebone Black
+    DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/beaglebone.png
+    IMAGE_URL: http://people.canonical.com/~mvo/all-snaps/bbb-all-snap.img.xz
+    ADDITIONAL_FIRST_BOOT_NOTES: |
+      Since we require our own boot loader in order to be fully compatible with Snappy, it's recommended to remove the bootloader available in the eMMC partition:
+      * On first boot (or each boot if you don't want to erase the bootloader available at the eMMC), you can also force it to boot to the sd card by pressing the user/boot switch button before powering up the device.
+      * Then, to remove the bootloader in the eMMC partition, you can run the following command on you Ubuntu Core system: `sudo dd if=/dev/zero of=/dev/mmcblk1 bs=1024 count=1024`
 intel-nuc:
   DEVICE_NAME: Intel® NUC
   DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/Thin_Canyon_NUC_Front_Angle_Board.png
