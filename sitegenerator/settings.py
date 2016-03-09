@@ -29,8 +29,8 @@ OUTPUT_DIR = os.path.join(ROOT_DIR, "out")
 
 # important mapping files
 RELEASES_BRANCH_MAPPING = "releases"
-GIT_IMPORT_MAPPING = "import-mapping"
-VARIABLES_MAPPING = "variables-mapping"
+GIT_IMPORT_MAPPING = "import-branches"
+DEVICES_MAPPING = "devices"
 IMPORT_URL_NAME = ".import_url"
 
 PREPEND_TOUR_TEMPLATES = {

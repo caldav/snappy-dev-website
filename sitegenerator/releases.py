@@ -26,7 +26,7 @@ import sys
 import subprocess
 import yaml
 
-from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING, VARIABLES_MAPPING
+from .settings import ROOT_DIR, RELEASES_BRANCH_MAPPING, DEVICES_MAPPING
 from .tools import next_relevant_line
 
 logger = logging.getLogger(__name__)
@@ -75,7 +75,7 @@ def load_device_metadata(release):
                           'RELEAS_VERSION': '16.04' },
         }"""
     devices_metadata = {}
-    with open(os.path.join(ROOT_DIR, VARIABLES_MAPPING)) as f:
+    with open(os.path.join(ROOT_DIR, DEVICES_MAPPING)) as f:
         devices_metadata = yaml.load(f.read())
     for device_key in devices_metadata:
         devices_metadata[device_key]['RELEASE_VERSION'] = release
