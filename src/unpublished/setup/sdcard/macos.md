@@ -51,6 +51,6 @@ You will be prompted to enter your Apple password after this command.
 
 1. **Eject** the SD card physically from your Mac and **insert it** in your [[DEVICE_NAME]].
 
-##IMPORT ../first_login.md
+##IMPORT ../first_boot.md
 
 ##IMPORT ../setup-outro.md

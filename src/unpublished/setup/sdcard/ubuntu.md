@@ -23,6 +23,6 @@ sync
 
 1. **Eject** the SD card physically from your PC and **insert it** in your [[DEVICE_NAME]].
 
-##IMPORT ../first_login.md
+##IMPORT ../first_boot.md
 
 ##IMPORT ../setup-outro.md

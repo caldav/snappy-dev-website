@@ -6,6 +6,6 @@ Visit [this link](http://www.ubuntu.com/download/desktop/create-a-usb-stick-on-m
 
 ##IMPORT common-instructions.md
 
-##IMPORT ../first_login.md
+##IMPORT ../first_boot.md
 
 ##IMPORT ../setup-outro.md

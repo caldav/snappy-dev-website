@@ -27,6 +27,6 @@ Once the download is finished, you’ll have a zip file named [[IMAGE_FILENAME]]
 
 1. Exit from Win32DiskImager. **Eject** the SD card from the File Explorer window and **insert it** in your [[DEVICE_NAME]].
 
-##IMPORT ../first_login.md
+##IMPORT ../first_boot.md
 
 ##IMPORT ../setup-outro.md
