@@ -1,6 +1,6 @@
 # Install your first snap package!
 
-It is now time to transform your Snappy Ubuntu Core [[RELEASE_VERSION]] system in an awesome arcade game machine!
+It is now time to transform your Snappy Ubuntu Core system in an awesome arcade game machine!
 You can easily install any snap through the webdm store UI.
 
 > If you retrieved the ip in the previous step, replace **webdm.local** by the **ip address** you noted before.
