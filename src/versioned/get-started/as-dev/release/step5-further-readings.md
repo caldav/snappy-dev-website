@@ -12,10 +12,11 @@ Awesome, you learnt quite a lot in a very short period of time. You:
 
 ## Where to jump next?
 
-This is of course just the start of this great Snappy Ubuntu Core journey! From there, you have mutiple options:
+This is of course just the start of this great Snappy Ubuntu Core journey! From there, you have mumtiple options:
 * Jump straight to the code and get inspired with our [snapcraft simple examples](https://github.com/ubuntu-core/snapcraft/tree/master/examples) exploring different faces and functionalities of building on snappy. If you want to check bigger projects, we also have [some demos](https://github.com/ubuntu-core/demos) available to you!
-* You want to know more about snapcraft and its features! Hope on to the [snapcraft documentation](https://developer.ubuntu.com/en/snappy/build-apps/) itself!
+* You want to know more about snapcraft and its features! Hope on to the [snapcraft documentation](https://developer.ubuntu.com/en/snappy/build-apps/) itself to understand its core component and life cycle!
 * You can also read more [snappy documentation](https://developer.ubuntu.com/en/snappy/guides/) have a deeper understanding of the base system.
+* Once you will have created your awesome applications, just [upload it to the store](https://myapps.developer.ubuntu.com) for delivering it instantaneously to your users!
 
 ## Getting in touch!
 
