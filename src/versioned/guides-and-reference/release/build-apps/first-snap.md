@@ -63,7 +63,7 @@ version: 0.42
 summary: Convert live streams to ascii output!
 description: This demo intend to show how to assemble different pieces, some coming from ubuntu, other coming from
  a git repo to create an amazing user experience on converting content to ascii output.
- This one is part of the demo tour at https://developer.ubuntu.com/snappy/get-started/as-dev!
+ This one is part of the demo tour at https://developer.ubuntu.com/snappy/get-started/as-dev
 ```
 
 > Note that we didn't provide an icon here, but you should if you intend to upload to the store, as you should put great
@@ -80,7 +80,7 @@ our file (you can give a line break in this yaml file to make the different sect
 parts:
   video-stream:
     plugin: nil
-    source: https://github.com/wisnij/gopaste.git
+    source: https://github.com/didrocks/vlc-netcat-service
     source-type: git
     stage-packages: [vlc]
 ```
@@ -170,7 +170,7 @@ version: 0.42
 summary: Convert live streams to ascii output!
 description: This demo intend to show how to assemble different pieces, some coming from ubuntu, other coming from
  a git repo to create an amazing user experience on converting content to ascii output.
- This one is part of the demo tour at https://developer.ubuntu.com/snappy/get-started/as-dev!
+ This one is part of the demo tour at https://developer.ubuntu.com/snappy/get-started/as-dev
 
 apps:
   video-stream-service:
@@ -190,7 +190,7 @@ plugs:
 parts:
   video-stream:
     plugin: nil
-    source: https://github.com/wisnij/gopaste.git
+    source: https://github.com/didrocks/vlc-netcat-service
     source-type: git
     stage-packages: [vlc]
   webserver:
