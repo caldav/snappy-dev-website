@@ -213,11 +213,12 @@ snapcraft
 What's happening there is that all parts are fetched in parallel in their `parts/<part_name>/src`, built in
 `parts/<part_name>/build` and installed in `parts/<part_name>/install`. Then, the install products are assembled in
 `stage/`. We finally copy the whole content to the `snap/` directory, in addition some metadata, and wrapper service
-scripts. This directory is then compressed into a single .snap file ready to use!
+scripts. This directory is then compressed into a single .snap file, ascii-as-a-service-demo_0.42_amd64.snap, ready to
+install!
 
 > You will probably notice that the .snap file is quite sizeable. This is because we ship vlc and all its dependencies
 > inside it. In a real world product, we would take the time to strip it down by filtering the files required by our
-> snap. This is possible via the *snap:* and *files* stenzas filtering the `stage/` to `snap/` copy.
+> snap. This is possible via the *snap:* and *filesets:* stenzas filtering the `stage/` to `snap/` copy.
 > More information on this is available on the snapcraft documentation.
 
 ## Time for testing
