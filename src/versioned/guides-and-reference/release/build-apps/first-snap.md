@@ -222,3 +222,18 @@ install!
 > More information on this is available on the snapcraft documentation.
 
 ## Time for testing
+
+Exit the classic dimension (or open another ssh connexion to the board) and head over to the `aas` directory.
+
+Install it and check the vlc stream service:
+```sh
+sudo snappy install ascii-as-a-service-demo_0.42_amd64.snap
+sudo snappy service logs ascii-as-a-service-demo
+2016-03-14T07:55:51.026182Z ubuntu-core-launcher No file to read provided yet. Use http://<machine_ip>:8042 to read provide the url you want to convert to ascii
+```
+
+-> It means the service is started! It's waiting to have a working file indicating what to install.
+
+> Pro tip! If your application service doesn't work, an easy way to debug it, instead of running
+`sudo snappy service restart` and `sudo snappy service logs <name>` continously, it to turn the daemon temporary as
+a command. (remove `daemon: simple`). Then, you can use the command directly executing `<snapname>.<appname>`!
