@@ -254,7 +254,7 @@ install!
 
 > You will probably notice that the .snap file is quite sizeable. This is because we ship vlc and all its dependencies
 > inside it. In a real world product, we would take the time to strip it down by filtering the files required by our
-> snap. This is possible via the *snap:* and *filesets:* stenzas filtering the `stage/` to `snap/` copy.
+> snap. This is possible via the *snap:* and *stage:* stenzas filtering the `stage/` to `snap/` copy.
 > More information on this is available on the snapcraft documentation.
 
 ## Time for testing
@@ -265,7 +265,7 @@ Install it and check the vlc stream service:
 ```sh
 sudo snappy install ascii-as-a-service-demo_0.42_amd64.snap
 sudo snappy service logs ascii-as-a-service-demo
-2016-03-14T07:55:51.026182Z ubuntu-core-launcher No file to read provided yet. Use http://<machine_ip>:8042 to read provide the url you want to convert to ascii
+2016-03-14T07:55:51.026182Z ubuntu-core-launcher No file to read provided yet. Use http://<machine_ip>:8042 to provide the url you want to convert to ascii
 ```
 
 -> It means the service is started! It's waiting to have a working file indicating what to install.
