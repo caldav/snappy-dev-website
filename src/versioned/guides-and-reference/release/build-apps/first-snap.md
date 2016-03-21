@@ -163,6 +163,38 @@ build and install into `parts/webserver` subdirectory. It is that easy!
 Similar than before, we are exposing the "stream-selection-server" executable (coming this build) via the
 "streamchooser-webserver" application service. We are reusing the same "unconfined-plug" for the moment.
 
+## Adding a small glue workaround
+
+We are going to add a small workaround parts, which enables us to illustrate the concept of dependencies between
+parts and using local source. `vlc` doesn't like to be run as root for security reasons. The vlc-netcat-streamer app
+service is running as such though. As it will finally run confined, we can be more confident and instructing vlc that
+it's fine to run as root. We can directly binary patch is to replace its check call.
+
+To do that, let's create the following `Makefile` in the same directoy than `snapcraft.yaml`:
+```Make
+install:
+        sed -i 's/geteuid/getppid/' ../../../stage/usr/bin/vlc
+```
+
+> Note: it's a tabulation (as part of Makefile syntax) that is in front of the `sed` call.
+
+Let's now create the parts. As you can infer, we need the parts downloading vlc completing its download/build/install
+and then copying to the common `stage` directory. This is doable thanks to the **after** keyword.
+```
+parts:
+  […]
+  workaround-vlc:
+    plugin: make
+    source: .
+    after: [video-stream]
+```
+
+The "workaround-vlc" parts, is running after the "video-stream" parts (and so, vlc will be available in the `stage`
+directory). We are using the `make` plugin which will execute the `MakeFile` in the same directory than `snapcraft.yaml`
+(`source: . `).
+
+## Result
+
 You should have a resulting file similar to this:
 ```
 name: ascii-as-a-service-demo
@@ -197,6 +229,10 @@ parts:
     plugin: go
     source: https://github.com/wisnij/gopaste.git
     source-type: git
+  workaround-vlc:
+    plugin: make
+    source: .
+    after: [video-stream]
 ```
 
 And that's all we need!
