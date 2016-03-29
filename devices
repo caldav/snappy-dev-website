@@ -45,3 +45,8 @@ kvm:
   DEVICE_NAME: KVM
   DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/kvm.png
   IMAGE_URL: http://UNPUBLISHED/kvm-image-16.04.img.xz
+
+vagrant:
+  DEVICE_NAME: Vagrant
+  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/vagrant.png
+  IMAGE_URL: http://cloud-images.ubuntu.com/snappy/16.04/core/stable/current/core-stable-amd64-vagrant.box
