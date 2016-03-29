@@ -74,3 +74,8 @@ gce:
   DEVICE_NAME: Google Cloud Engine
   DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/gce.png
   IMAGE_ID: ubuntu-snappy-core-1504-stable-2-v20150423
+
+ec2:
+  DEVICE_NAME: Amazon EC2
+  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/ec2.png
+  IMAGE_ID: ami-6c0a6704
