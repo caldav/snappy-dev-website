@@ -40,3 +40,8 @@ intel-nuc:
   EMMC_DISK_INSTRUCTIONS: >
     Please note that if you want to use the eMMC instead of an internal ssd drive, replace **/dev/sdX** by **/dev/mmcblk0**
     which refers to the eMMC option.
+
+kvm:
+  DEVICE_NAME: KVM
+  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/kvm.png
+  IMAGE_URL: http://UNPUBLISHED/kvm-image-16.04.img.xz
