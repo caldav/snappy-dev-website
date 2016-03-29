@@ -56,3 +56,11 @@ vagrant:
   DEVICE_NAME: Vagrant
   DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/vagrant.png
   IMAGE_URL: http://cloud-images.ubuntu.com/snappy/16.04/core/stable/current/core-stable-amd64-vagrant.box
+
+x86-device:
+  DEVICE_NAME: x86 Device
+  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/baremetal.png
+  IMAGE_URL: http://people.canonical.com/~mvo/all-snaps/amd64-all-snap.img.xz
+  SETUP_NOTES: |
+    You can use an **USB card** or **disk drive** that you will attach to after installing Ubuntu Core on it.
+    You will need to ensure that the boot order in BIOS/UEFI is set to try that USB storage or new disk first.
