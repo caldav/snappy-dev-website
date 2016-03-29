@@ -1,1 +1,1 @@
-../../../../../unpublished/setup/sdcard/macos.md
+../../../../../unpublished/setup/disk/macos.md

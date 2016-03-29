@@ -1,1 +1,1 @@
-../../../../../unpublished/setup/sdcard/windows.md
+../../../../../unpublished/setup/disk/windows.md
