@@ -47,18 +47,7 @@ Let's pass the SSH key information to the Compute Engine. The following command 
 $ gcloud compute project-info add-metadata --metadata-from-file sshKeys=~/.ssh/google-ecdsa.pub
 ```
 
-### SSH configuration
-
-SSH is disabled by default on snappy systems, for enhanced security. You can turn it on by providing some configuration
-when you launch the instance, and for that you will need to create a cloud-init configuration file that will turn on SSH
-so you can login to play with Ubuntu Core.
-
-1. Create a file called `cloud.cfg` with the exact lines of text you see below:
-```
-# cloud-config
-snappy:
-    ssh_enabled: True
-```
+##IMPORT ../ssh-enable.md
 
 ### Available Images
 Here's how you can find the list of available snappy images on GCE:

@@ -24,18 +24,7 @@ $ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 ```
 After either of the above **openssl** commands, you'll want to copy the key and **azure_pub.pem** to `~/.ssh`
 
-### SSH configuration
-
-SSH is disabled by default on snappy systems, for enhanced security. You can turn it on by providing some configuration
-when you launch the instance, and for that you will need to create a cloud-init configuration file that will turn on SSH
-so you can login to play with Ubuntu Core.
-
-Create a file called `cloud.cfg` with the exact lines of text you see below:
-```
-# cloud-config
-snappy:
-    ssh_enabled: True
-```
+##IMPORT ../ssh-enable.md
 
 ### Available Images
 Here's how you can find the list of available snappy images on Azure:
