@@ -90,9 +90,12 @@ def _replace_from_map(line, regexp, replace_pattern, device_vars):
     unfound_keywords_list = []
     for keyword in regexp.findall(line):
         try:
-            line = line.replace(replace_pattern.format(keyword), device_vars[keyword])
+            replace_with = device_vars[keyword]
         except KeyError:
             unfound_keywords_list.append(keyword)
+            replace_with = ""
+        # we always replace, even with something empty (useful for optional content)
+        line = line.replace(replace_pattern.format(keyword), replace_with)
     return (line, unfound_keywords_list)
 
 
