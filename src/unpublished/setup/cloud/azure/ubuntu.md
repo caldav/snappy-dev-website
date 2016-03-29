@@ -1,6 +1,6 @@
 ##IMPORT ../setup-intro.md
 
-## Setup your Azure configuration
+##IMPORT pre-requisites.md
 
 ### Install Azure client tool
 

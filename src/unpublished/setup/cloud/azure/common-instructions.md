@@ -1,4 +1,6 @@
-### Setup your account
+### Setup your account and configuration
+
+Now that you have an Azure setup and the cli tools installed, you'll need to configure the tools.
 
 Just run:
 ```sh
@@ -22,6 +24,19 @@ $ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 ```
 After either of the above **openssl** commands, you'll want to copy the key and **azure_pub.pem** to `~/.ssh`
 
+### SSH configuration
+
+SSH is disabled by default on snappy systems, for enhanced security. You can turn it on by providing some configuration
+when you launch the instance, and for that you will need to create a cloud-init configuration file that will turn on SSH
+so you can login to play with Ubuntu Core.
+
+Create a file called `cloud.cfg` with the exact lines of text you see below:
+```
+# cloud-config
+snappy:
+    ssh_enabled: True
+```
+
 ### Available Images
 Here's how you can find the list of available snappy images on Azure:
 ```sh
@@ -35,18 +50,8 @@ In our example, we'll use the latest image at the time of this writing, which is
 We suggest you to replace the tags for date and version to use the latest one available.
 
 ### First Ubuntu Core instance
-SSH is disabled by default on snappy systems, for enhanced security. You can turn it on by providing some configuration
-when you launch the instance, and for that you will need to create a cloud-init configuration file that will turn on SSH
-so you can login to play with Ubuntu Core.
 
-1. Create a file called `cloud.cfg` with the exact lines of text you see below:
-```
-# cloud-config
-snappy:
-    ssh_enabled: True
-```
-
-1. Now you are ready to launch the image on Azure. The general form of this command is:
+Now you are ready to launch the image on Azure. The general form of this command is:
 ```sh
 $ azure vm create <NAME> <IMAGE> <USER> <PASSWORD> <flags>
 ```
