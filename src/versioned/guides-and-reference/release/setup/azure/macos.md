@@ -1,0 +1,1 @@
+../../../../../unpublished/setup/cloud/azure/macos.md

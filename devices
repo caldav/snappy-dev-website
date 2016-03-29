@@ -64,3 +64,8 @@ x86-device:
   SETUP_NOTES: |
     You can use an **USB card** or **disk drive** that you will attach to after installing Ubuntu Core on it.
     You will need to ensure that the boot order in BIOS/UEFI is set to try that USB storage or new disk first.
+
+azure:
+  DEVICE_NAME: Azure
+  DEVICE_IMG_URL: https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/devices/azure.png
+  IMAGE_ID: b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-15.04-Snappy-core-amd64-edge-201507020801-108-en-us-30GB
