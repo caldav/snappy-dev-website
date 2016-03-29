@@ -36,15 +36,15 @@ $ gcloud config set compute/zone us-central1-f
 $ gcloud config set compute/region us-central1
 ```
 
-1. It's now time to get SSH keys setup and Google Compute Engine configured to use them. If you already have an SSH key, you ca
+1. It's now time to get SSH keys setup and Google Compute Engine configured to use them. If you already have an SSH key, you can
  skip creating an SSH key. Otherwise, create an SSH key for login in:
 ```sh
-$ ssh-keygen -t ecdsa -b 521 -f ~/.ssh/google-ecdsa
+$ ssh-keygen -t ecdsa -b 521 -f ~/.ssh/snappy-[[DEVICE_ID]]
 ```
 
 Let's pass the SSH key information to the Compute Engine. The following command will add the SSH key to every instance launched
 ```sh
-$ gcloud compute project-info add-metadata --metadata-from-file sshKeys=~/.ssh/google-ecdsa.pub
+$ gcloud compute project-info add-metadata --metadata-from-file sshKeys=~/.ssh/snappy-[[DEVICE_ID]].pub
 ```
 
 ##IMPORT ../ssh-enable.md
@@ -77,5 +77,5 @@ That's it. Your instance is ready to login to now via ssh using the external IP 
 Typically you would use gcloud compute ssh <name> at this point for a regular Ubuntu instance. However, at this time,
 Ubuntu Core does not have event-based user creation. So you will need to manually SSH in as the Ubuntu user:
 ```sh
-$ ssh -i ~/.ssh/google-ecdsa ubuntu@<EXTERNAL IP ADDRESS>
+$ ssh -i ~/.ssh/snappy-[[DEVICE_ID]] ubuntu@<EXTERNAL IP ADDRESS>
 ```

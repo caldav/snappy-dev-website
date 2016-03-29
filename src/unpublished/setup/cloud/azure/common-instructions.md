@@ -14,15 +14,15 @@ your Ubuntu Core instance on Azure you will need to supply an SSH key that will 
  * If you have an existing key, let's convert it:
 ```sh
 $ openssl req -x509  -key ~/.ssh/id_rsa -nodes -days 365  \
--newkey rsa:2048 -out ~/.ssh/azure_pub.pem -subj "/CN=${USER}/"
+-newkey rsa:2048 -out ~/.ssh/snappy_[[DEVICE_ID]].pem -subj "/CN=${USER}/"
 ```
 
  * If you don't have one, let's create a new key:
 ```sh
 $ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
--keyout ~/.ssh/azure.key -out ~/.ssh/azure_pub.pem -subj "/CN=${USER}/"
+-keyout ~/.ssh/snappy_[[DEVICE_ID]].key -out ~/.ssh/snappy_[[DEVICE_ID]].pem -subj "/CN=${USER}/"
 ```
-After either of the above **openssl** commands, you'll want to copy the key and **azure_pub.pem** to `~/.ssh`
+After either of the above **openssl** commands, you'll want to copy the key and **snappy_[[DEVICE_ID]].pem** to `~/.ssh`
 
 ##IMPORT ../ssh-enable.md
 
@@ -50,7 +50,7 @@ The following is an example command. Remember to replace the image name by the l
 $ azure vm create {UNIQUE_ID} \
 [[IMAGE_ID]] ubuntu \
 --location "North Europe" --no-ssh-password \
---ssh-cert ~/.ssh/azure_pub.pem --custom-data ~/cloud.cfg -e
+--ssh-cert ~/.ssh/snappy_[[DEVICE_ID]].pem --custom-data ~/cloud.cfg -e
 ```
 
 ### Check that the instance is running
@@ -68,5 +68,5 @@ info:    vm list command OK
 
 When the image state is **ReadyRole** you can make a note of the hostname from the listing above, and login with SSH to the instance (replace snappy-test.cloudapp.net with the DNS name from your azure vm list command):
 ```sh
-$ ssh -i ~/.ssh/azure.key ubuntu@snappy-test.cloudapp.net
+$ ssh -i ~/.ssh/snappy_[[DEVICE_ID]].key ubuntu@snappy-test.cloudapp.net
 ```
