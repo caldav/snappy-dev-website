@@ -1,27 +1,34 @@
 # Building our first snap!
 
-It's time to invent a new business model, let's create the first world ever video streaming to ascii art output service!
-AAS (Ascii As a Service) will publish a small webserver which
+It's quite often we have to share for demonstrations some command line typing to an audience group. It would be awesome
+to have a shell that can record the exact output on multiple terminals, and be able to broadcast that to an audience.
+It would be even more exciting if that recording is available for copy and paste so that people can simply reproduce
+the exercise locally!
 
-And you are going to do all this without writing any code! We are going to reuse existing pieces of infrastructures, mainly:
-* *vlc* and *netcat*, directly coming from the ubuntu distribution
-* the webserver in go publishing a simple web page to take the stream url and restart vlc when a new link is given. This
-  code is published on github.
-* a little bit of glue code, also published on github, as a wrapper to start vlc and netcat and read the new link url from
-  a file.
+This is exactly what I'm proposing for us to do together without writing any code! We are going to reuse existing pieces
+of infrastructures, mainly:
+* *asciicinema*, a terminal recorder, that we are going to pull directly from this golang upstream github project and
+build!
+* *qrencode* and *byobu*, 2 debian packages directly coming from the ubuntu distribution. This will enable us to print
+a qr code referencing directly a particular recording. byobu is going to enable us to have multiple tabs and split
+sharing inside the terminal.
+* a webserver, also published on github and written in nodejs, referencing all found asciinema files on the system and
+be able to play it. Some websocket tech enables a live view from it and also to directly reference from some url a particular recording.
+* a little bit of glue code to start asciicinema, launch byobu and print the qrcode, also published on github.
 
-Finally, once installed, we will read can just use the ascii video viewer of the future: *telnet*!
+Finally, once installed, people just have to head over to http://<ip_address>:8080, dim down the light, bring popcorn
+and enjoy the show!
 
-<IMGGGGGGGG>
+![Terminal Recorder web](https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/terminal-recorder-web.png)
 
-If you want to play with it right away, just install *ascii-as-a-service.didrocks* from the Store! Head over to
-http://webdm.local:8042 to get to the web interface!
+If you want to play with it right away, just install *terminal-recoder-demo.didrocks* from the Store! Head over to
+http://webdm.local:8080 to get to the web interface! (Note: not available yet on the store, coming soon.)
 
 ## Snapcraft quick overview
 
 Snapcraft is a build and packaging tool which helps you package your software as a snap. It makes it easy to incorporate
 components from different sources and build technologies or solutions. Those sources are named **parts** and enable you
-to turn any source repository like [github](https://github.com/) or [launchpad](https://launchpad.net/) as a real
+to turn any source repository like [github](https://github.com/) or [launchpad](https://launchpad.net/) into a real
 opensource store!
 
 We are going to create a **snapcraft.yaml** file to declare the package name, the different **parts** we are assembling, and
@@ -40,8 +47,8 @@ and can be distributed to our users.
 Let's create and file the base info in our snapcraft.yaml!
 
 ```sh
-$ mkdir aas
-$ cd aas
+$ mkdir terminal-recorder
+$ cd terminal-recorder
 $ snapcraft init
 ```
 
@@ -58,59 +65,55 @@ Let's fire up your preferred editor (I'm using `vi` which is installed by defaul
 ed, emacs… Remember, you are in a classic ubuntu environment here!). Let's file with this content
 
 ```
-name: ascii-as-a-service-demo
+name: terminal-recorder-demo
 version: 0.42
-summary: Convert live streams to ascii output!
+summary: Record your terminal to replay them later!
 description: This demo intend to show how to assemble different pieces, some coming from ubuntu, other coming from
- a git repo to create an amazing user experience on converting content to ascii output.
+ a git repo to create an amazing user experience by recording your terminal input and outputs and provide a webserver
+ to replay those.
  This one is part of the demo tour at https://developer.ubuntu.com/snappy/get-started/as-dev
 ```
 
 > Note that we didn't provide an icon here, but you should if you intend to upload to the store, as you should put great
 > care to your summary and description as your future users will base their decision on this to install or not your snap!
 
-## Creating our video-stream-service
+## Creating our webserver
 
 ### The parts
 
-Let's create our service which is taking some glue code from a git repository and exposing it as a service. Append to
-our file (you can give a line break in this yaml file to make the different sections clearer):
+Let's first create our service which is taking some nodejs webserver code (built using [express.js](http://expressjs.com))
+from a git repository and exposing it as a service. Let's append to our file (you can put a line break in this yaml
+file to make the different sections clearer):
 
 ```
 parts:
-  video-stream:
-    plugin: nil
-    source: https://github.com/didrocks/vlc-netcat-service
+  webserver:
+    plugin: nodejs
+    source: https://github.com/didrocks/asciinema-local-server
     source-type: git
-    stage-packages: [vlc]
 ```
 
-We are creating here a **video-stream** part, referencing a git repository. The repository will be cloned into
-`parts/video-stream` after installing git on the system. You have now access to the widest library store in the world,
-directly characters away!
+We are creating here a **webserver** part, referencing a git repository. The repository will be cloned into
+`parts/webserver` after installing git on the system. You have now access to the widest library store in the world,
+few characters away!
 
-> Note that this repository could also be in the same directory than our `snapcraft.yaml` file
-(we would then just set `source: .`).
-
-**stage-packages** instructs the *video-stream* part to download and install the **vlc** package and all
-its dependencies which aren't part of ubuntu-core snap into `parts/video-stream`. Reusing one of the 58k `.deb` packages
-that traditional ubuntu provides is that easy, just name the packages you need to embeeded them in your snap!
-
-Finally, you will notice that we are using the **nil** plugin, which, as the name infers, do nothing. It will simply
-ship all files that are present in this part to the final snap by a direct copy to the `stage/` directory at snap build
-time.
+You will notice that we are using the **nodejs** plugin, which, as the name infers, is specialized for nodejs projects.
+It will take all *npm* dependencies referenced in *package.json* and install, alongside to this source code. If we
+wanted to specify dependencies manually, we would have used `node-packages: [list of modules]` instead. Once installed,
+it will  simply ship all files that are present in this part to the final snap by a direct copy to the `stage/`
+directory at snap build time.
 
 ### The service declaration
 
-Shipping an executable file (here `vlc-netcat-streamer` from our git repository) isn't enough for our ubuntu core system
+Shipping an executable file (here `bin/asciinema-local-server` from our git repository) isn't enough for our ubuntu core system
 or users to get access to it! We need to declare it, declares its types and the capabilities it needs to access.
 
 > Note: I tend to put those 2 stenzas before the "parts" one, as it's what the snap is exposing to users and system.
 
 ```
 apps:
-  video-stream-service:
-    command: vlc-netcat-streamer
+  asciinema-service:
+    command: bin/asciinema-local-server
     daemon: simple
     plugs: [unconfined-plug]
 
@@ -120,30 +123,30 @@ plugs:
     security-template: unconfined
 ```
 
-Here, we declare a "video-stream-service" app, of type daemon (a service which starts at boot and keeps running). This
-one is executing the `vlc-netcat-streamer` script located at the root of the snap (we can use a relative path). It
-uses a **plug** that we named "unconfined-plug". This plug is then declared and is using the "unconfined" security
-template.
+Here, we declare a **asciinema-service** app, of type **daemon** (a service which starts at boot and keeps running).
+This one is executing the `bin/asciinema-local-server` script relative to the root of the snap. It uses a **plug** that
+we named **unconfined-plug**. This plug is then declared and is using the "unconfined" security template.
 
 We will add security later on, but it's always a good idea to perform those steps:
 - start with some unconfined profile, get your snap working on the system. You can them move security permission issues
   away that way.
-- then confined your application adding the necessary security permissions. This is required to be available in the
+- then confine your application adding the necessary security permissions. This is required to be available in the
   store.
 
-And we are done with our first service! Let's get to the second one which is a webserver exposing the stream selection
-interface.
+And we are done with our first service! Let's create now the recording command line tools so that we have something to
+feed our service with!
 
-## Creating our streamchooser-webserver
+## Creating our record-terminal application
 
-We are going to extend our `snapcraft.yaml` now to reference our webserver, written in go, append to the existing
-stenzas:
+We are going to extend our `snapcraft.yaml` now to reference our record-terminal, which will consists of two parts:
+- the **asciinema** upstream code, which we need to build and install
+- some glue code, bringing together **asciicinema**, **byobu** and **qrencode**.
+Append to the existing stenzas:
 ```
 apps:
   […]
-  streamchooser-webserver:
-    command: stream-selection-server
-    daemon: simple
+  record-terminal:
+    command: record-terminal.limited
     plugs: [unconfined-plug]
 
 plugs:
@@ -151,67 +154,58 @@ plugs:
 
 parts:
   […]
-  webserver:
+  asciinema:
     plugin: go
-    source: https://github.com/wisnij/gopaste.git
+    source: https://github.com/asciinema/asciinema
     source-type: git
+  recorder-command-glue:
+    plugin: copy
+    source: https://github.com/didrocks/recorder-command
+    source-type: git
+    stage-packages: [qrencode, byobu]
 ```
 
-The "webserver" part is referencing the **go** plugin will install golang on the system, fetch its dependencies,
-build and install into `parts/webserver` subdirectory. It is that easy!
+The **asciinema** part is referencing the **go** plugin will install golang on the system, fetch its dependencies,
+build and install into `parts/asciinema` subdirectory. It is that easy!
 
-Similar than before, we are exposing the "stream-selection-server" executable (coming this build) via the
-"streamchooser-webserver" application service. We are reusing the same "unconfined-plug" for the moment.
+We are also adding another **recorder-command-glue** part, referencing as well another source which is a couple of shell
+scripts calling as told previously **asciinema**, **qrencode**, **byobu**
 
-## Adding a small glue workaround
+> Note that those scripts could also be in the same directory than our `snapcraft.yaml` file (we would then just set
+`source: .`). This is available with any of the plugins, but for the sake of easiness of this tutorial, we only wanted
+you to write this snapcraft.yaml file!
 
-We are going to add a small workaround parts, which enables us to illustrate the concept of dependencies between
-parts and using local source. `vlc` doesn't like to be run as root for security reasons. The vlc-netcat-streamer app
-service is running as such though. As it will finally run confined, we can be more confident and instructing vlc that
-it's fine to run as root. We can directly binary patch is to replace its check call.
+**stage-packages** instructs the *recorder-command-glue* part to download and install the **qrencode** and **byobu**
+packages and all their dependencies which aren't part of ubuntu-core snap into `parts/recorder-command-glue`. This
+simly mean that this way, you are able to reuse any  of the 58k `.deb` packages that traditional ubuntu provides!
+This is that easy, just name the packages you need to embedded them in your snap!
 
-To do that, let's create the following `Makefile` in the same directoy than `snapcraft.yaml`:
-```Make
-install:
-        sed -i 's/geteuid/getppid/' ../../../stage/usr/bin/vlc
-```
+Similar than before, we are exposing an **record-terminal** command, pointing to **record-terminal.limited** (coming
+from the recorder-command-glue part). This command will be exposed as **<package_name>.<binary_name>**, and so in our
+case `terminal-recorder-demo.record-terminal`.
 
-> Note: it's a tabulation (as part of Makefile syntax) that is in front of the `sed` call.
+We can note this isn't a service but a command as we didn't mention `daemon: simple`. We are reusing the same
+**unconfined-plug** for the moment.
 
-Let's now create the parts. As you can infer, we need the parts downloading vlc completing its download/build/install
-and then copying to the common `stage` directory. This is doable thanks to the **after** keyword.
-```
-parts:
-  […]
-  workaround-vlc:
-    plugin: make
-    source: .
-    after: [video-stream]
-```
-
-The "workaround-vlc" parts, is running after the "video-stream" parts (and so, vlc will be available in the `stage`
-directory). We are using the `make` plugin which will execute the `MakeFile` in the same directory than `snapcraft.yaml`
-(`source: . `).
-
-## Result
+## The whole snapcraft.yaml
 
 You should have a resulting file similar to this:
 ```
-name: ascii-as-a-service-demo
+name: terminal-recorder-demo
 version: 0.42
-summary: Convert live streams to ascii output!
+summary: Record your terminal to replay them later!
 description: This demo intend to show how to assemble different pieces, some coming from ubuntu, other coming from
- a git repo to create an amazing user experience on converting content to ascii output.
+ a git repo to create an amazing user experience by recording your terminal input and outputs and provide a webserver
+ to replay those.
  This one is part of the demo tour at https://developer.ubuntu.com/snappy/get-started/as-dev
 
 apps:
-  video-stream-service:
-    command: vlc-netcat-streamer
+  asciinema-service:
+    command: bin/asciinema-local-server
     daemon: simple
     plugs: [unconfined-plug]
-  streamchooser-webserver:
-    command: streamchooser-webserver
-    daemon: simple
+  record-terminal:
+    command: record-terminal.limited
     plugs: [unconfined-plug]
 
 plugs:
@@ -220,24 +214,17 @@ plugs:
     security-template: unconfined
 
 parts:
-  video-stream:
-    plugin: copy
-    source: .
-    files:
-      vlc-netcat-streamer.wrapper: vlc-netcat-streamer.wrapper
-      vlc-netcat-streamer: vlc-netcat-streamer
-    stage-packages: [vlc]
-    //plugin: nil
-    //source: https://github.com/didrocks/vlc-netcat-service
-    //source-type: git
   webserver:
-    plugin: go
-    source: https://github.com/didrocks/streamchooser-webserver
+    plugin: nodejs
+    source: https://github.com/didrocks/asciinema-local-server
     source-type: git
-  workaround-vlc:
-    plugin: make
-    source: .
-    after: [video-stream]
+  asciinema:
+    plugin: go
+    source: https://github.com/asciinema/asciinema
+    source-type: git
+  recorder-command-glue:
+    plugin: copy
+    stage-packages: [qrencode, byobu]
 ```
 
 And that's all we need!
@@ -249,16 +236,14 @@ It's high time to perform our first snap build! Just run:
 snapcraft
 ```
 
-> Note that vlc has a lot of dependency and this can take some download time.
-
 What's happening there is that all parts are fetched in parallel in their `parts/<part_name>/src`, built in
-`parts/<part_name>/build` and installed in `parts/<part_name>/install`. Then, the install products are assembled in
-`stage/`. We finally copy the whole content to the `snap/` directory, in addition some metadata, and wrapper service
-scripts. This directory is then compressed into a single .snap file, ascii-as-a-service-demo_0.42_amd64.snap, ready to
-install!
+`parts/<part_name>/build` and installed in `parts/<part_name>/install`. Ubuntu packages are fetched under
+`parts/<part_name>/ubuntu`. Then, the install products are assembled in `stage/`. We finally copy the whole content to
+the `snap/` directory, in addition some metadata, and wrapper service scripts. This directory is then compressed into
+a single **.snap** file, named `terminal-recorder-demo_0.42_amd64.snap` (if you built it on amd64), ready to install!
 
-> You will probably notice that the .snap file is quite sizeable. This is because we ship vlc and all its dependencies
-> inside it. In a real world product, we would take the time to strip it down by filtering the files required by our
+> In a real world product, it's possible to strip down files we don't necessarily need from the parts or ubuntu
+> packages to trim down snap size. We can achieve this trimming down by filtering the files required by our
 > snap. This is possible via the *snap:* and *stage:* stenzas filtering the `stage/` to `snap/` copy.
 > More information on this is available on the snapcraft documentation.
 
