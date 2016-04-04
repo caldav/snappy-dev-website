@@ -210,7 +210,7 @@ apps:
     daemon: simple
     plugs: [unconfined-plug]
   streamchooser-webserver:
-    command: stream-selection-server
+    command: streamchooser-webserver
     daemon: simple
     plugs: [unconfined-plug]
 
@@ -221,13 +221,18 @@ plugs:
 
 parts:
   video-stream:
-    plugin: nil
-    source: https://github.com/didrocks/vlc-netcat-service
-    source-type: git
+    plugin: copy
+    source: .
+    files:
+      vlc-netcat-streamer.wrapper: vlc-netcat-streamer.wrapper
+      vlc-netcat-streamer: vlc-netcat-streamer
     stage-packages: [vlc]
+    //plugin: nil
+    //source: https://github.com/didrocks/vlc-netcat-service
+    //source-type: git
   webserver:
     plugin: go
-    source: https://github.com/wisnij/gopaste.git
+    source: https://github.com/didrocks/streamchooser-webserver
     source-type: git
   workaround-vlc:
     plugin: make
