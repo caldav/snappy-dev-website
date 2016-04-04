@@ -40,7 +40,7 @@ to build locally will contain the binaries and metadata from our app. This one i
 Once we are confident enough with it, we can upload it to the Snappy Ubuntu Core Store, where it gets digital signature
 and can be distributed to our users.
 
-![Snapcraft diagram](https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/snapcraft-diagram.png)
+![Snapcraft diagram](https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/snapcraft-diagram.svg)
 
 ## Creating our snapcraft.yaml
 
