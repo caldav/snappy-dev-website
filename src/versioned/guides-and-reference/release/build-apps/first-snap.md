@@ -142,6 +142,7 @@ We are going to extend our `snapcraft.yaml` now to reference our record-terminal
 - the **asciinema** upstream code, which we need to build and install
 - some glue code, bringing together **asciicinema**, **byobu** and **qrencode**.
 Append to the existing stenzas:
+
 ```
 apps:
   […]
@@ -187,7 +188,7 @@ case `terminal-recorder-demo.record-terminal`.
 We can note this isn't a service but a command as we didn't mention `daemon: simple`. We are reusing the same
 **unconfined-plug** for the moment.
 
-## The whole snapcraft.yaml
+## Snapcraft.yaml at this step
 
 You should have a resulting file similar to this:
 ```
