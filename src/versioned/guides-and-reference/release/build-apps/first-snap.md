@@ -284,3 +284,117 @@ recording ready to be played, title being shown and a recording time. Awesome wo
 > though and that's why we publish the link to /snaps/terminal-recorder-demo.sideload/current/record-terminal, which
 > has some logic to run outside of the wrapper command, and thus, this limitation. Note that you can also run
 > commands as root using sudo!
+
+## Enabling confinement
+
+To finish our work, it's time to turn on confinement on our snap. Let's see together an effective way to deal with this.
+Get back into your classic shell environment with `sudo snappy shell classic`
+
+### Put confinement back
+
+Let's only confine the **asciinema-service** webserver for now. We can't really confine the command as it needs to have
+access to the whole file system as a shell, and create pseudo ttys. The Snappy team is currently working on bringing a
+"shell" interface security policy for this, but it's not there yet, so we will just keep the **unconfined-plug** plug
+for it!
+
+So, let's remove remove the `plugs: [unconfined-plug]` from **asciicinema-service** in your `snapcraft.yaml`:
+```
+apps:
+  asciinema-service:
+    command: bin/asciinema-local-server
+    daemon: simple
+```
+
+And rebuild your snap via `snapcraft`. We can notice that only the last step (creating the snap file) is executed, as
+nothing else changed. It will keep the previously built and cache content. If you want to restart from scratch, just run
+`snapcraft clean`!
+
+### Debugging the new snap
+
+Before installing your new version, install first the snappy-debug package in your ubuntu core install and run a
+security audit tool. We advise you to do it in a new terminal:
+```sh
+$ sudo snappy install snappy-debug
+$ snappy-debug.security scanlog
+```
+
+This command will print the history audit logs and wait for new ones. This enables us to see new security denials live!
+
+In another terminal (get out of the classic shell if you are still in it), we install the new snap:
+```sh
+$ sudo snappy install terminal-recorder-demo_0.42_*.snap
+```
+
+> Note that the version is still 0.42. However, if you `snappy list -v`, you will see that 2 versions of the
+> **terminal-recorder-demo** is available, with generated version id to segregated data in different directories.
+
+We can see that the service isn't started when trying to refresh http://webdm.local:8080. We can double check via:
+```sh
+$ sudo snappy service logs terminal-recorder-demo
+2016-04-04T14:11:33.304529Z systemd terminal-recorder-demo_webserver_LVWRJdmdbBCp.service: Main process exited, code=killed, status=31/SYS
+2016-04-04T14:11:33.305879Z systemd Stopped service webserver for package terminal-recorder-demo.
+2016-04-04T14:11:33.306807Z systemd terminal-recorder-demo_webserver_LVWRJdmdbBCp.service: Unit entered failed state.
+2016-04-04T14:11:33.307305Z systemd terminal-recorder-demo_webserver_LVWRJdmdbBCp.service: Failed with result 'signal'.
+2016-04-04T14:11:33.331206Z systemd Started service webserver for package terminal-recorder-demo.
+```
+
+It seems that the service is trying to start and stop and fails. This `Unit entered failed state` and
+`Failed with result 'signal'` is a clear indication of this.
+
+If we look at the scanlog window, we can now see:
+```sh
+= Seccomp =
+Time: Apr  4 14:08:59
+Log: auid=4294967295 uid=0 gid=0 ses=4294967295 pid=1892 comm="node" exe="/snaps/terminal-recorder-demo.sideload/LVWRJdmdbBCp/bin/node" sig=31 arch=c000003e 55(getsockopt) compat=0 ip=0x7f38ea88de2a code=0x0
+Syscall: getsockopt
+Suggestions:
+* add 'getsockopt' to 'syscalls' in security-override
+* add one of 'firewall-management, network-client, network-listener, unix-listener' to 'caps'
+```
+
+So, this really means, there is no hope in trying any number of `sudo snappy service restart <snap>` (or stop/start)
+to fix it!
+
+### Fixing our snap and trying it
+
+Let's follow what the audit logs says, and as we are listening on incoming requests on the network,
+let's add a **network-listener** caps
+
+Enter the classic mode and edit `snapcraft.yaml`:
+```
+```
+apps:
+  asciinema-service:
+    command: bin/asciinema-local-server
+    daemon: simple
+    plugs: [listener]
+
+plugs:
+  listener:
+    interface: old-security
+    caps: [network-listener]
+  […]
+```
+
+The **asciinema-service** is using the **listener** plug pointing to **network-listener** capability.
+
+Rebuild your snap with `snapcraft`, exits the classic shell, install the new version via
+`sudo snappy install terminal-recorder-demo_0.42_*.snap` and reload your webbrowser to now enjoy a confined, secured,
+webservice!
+
+> Pro tip! If your application service doesn't work at all, an easy way to debug it, instead of running
+`sudo snappy service restart` and `sudo snappy service logs <name>` continuously, to get output infos, turn the daemon
+temporary as a command. (remove `daemon: simple`). Then, you can use the command directly executing `<snapname>.<appname>`!
+This makes iteration way easier!
+
+## Summing it all up
+
+In a very few declarative lines, we have been able to produce a tool recording a multiplexed terminal window, and
+publish them through a confined webservice to users so that they can replay them. Note that we merged different
+technologies like go, nodejs, scripts and even ubuntu packages to make this independant unit, now ready to be available
+on millions of machines!
+
+There are a lot of plugins in snapcraft for different use cases, do not hesitate to explore them via
+`snappy help <plugin_name>`!
+
+For reference, the final `snapcraft.yaml` should now look like [this](https://github.com/didrocks/ubuntu-core-exp/blob/master/terminal-recorder/snapcraft.yaml).
