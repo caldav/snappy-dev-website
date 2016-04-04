@@ -249,17 +249,38 @@ a single **.snap** file, named `terminal-recorder-demo_0.42_amd64.snap` (if you 
 
 ## Time for testing
 
-Exit the classic dimension (or open another ssh connexion to the board) and head over to the `aas` directory.
+Exit the classic dimension (or open another ssh connexion to the board) and head over to the `terminal-recorder` directory.
 
-Install it and check the vlc stream service:
+Install it and play with it!
 ```sh
-sudo snappy install ascii-as-a-service-demo_0.42_amd64.snap
-sudo snappy service logs ascii-as-a-service-demo
-2016-03-14T07:55:51.026182Z ubuntu-core-launcher No file to read provided yet. Use http://<machine_ip>:8042 to provide the url you want to convert to ascii
+cd terminal-recorder
+sudo snappy install terminal-recorder-demo_0.42_amd64.snap
 ```
 
--> It means the service is started! It's waiting to have a working file indicating what to install.
+Head your browser to http://webdm.local:8080, it will tell you to run `terminal-recorder-demo.record-terminal` on your
+ubuntu core machine to start recording. Let's do this!
 
-> Pro tip! If your application service doesn't work, an easy way to debug it, instead of running
-`sudo snappy service restart` and `sudo snappy service logs <name>` continously, it to turn the daemon temporary as
-a command. (remove `daemon: simple`). Then, you can use the command directly executing `<snapname>.<appname>`!
+```sh
+$ terminal-recorder-demo.record-terminal
+/!\ You are running from a snappy wrapper command, you won't be able to run other snap commands here.
+If you want to run other snaps app while still recording, please exit and use instead:
+/snaps/terminal-recorder-demo.sideload/current/record-terminal
+
+Enter title of your recording:
+```
+
+Feel free to enter now the title under which you are going to publish this recording. Then `byobu` is launched (after a warning if your terminal size may be too large for easy replay on smaller screen size).
+Any command and output you enter here are recorded, try to type `ls`, `cd` and other Linux commands! You can open new
+terminals with `<F2>`, and navigate between them through `<F3>/<F4>`.
+
+![Terminal Recorder command](https://raw.githubusercontent.com/ubuntu-core/snappy-dev-website/master/src/img/terminal-recorder-command.png)
+
+Once you logout from the last terminal, you get a, ASCII QR code that can be scanned to have a direct reference url.
+If you head again to your browser, you should see as well the page being refreshed automatically with your first
+recording ready to be played, title being shown and a recording time. Awesome work!
+
+> Note that as you application is running under a wrapper command, you won't be able to run other commands from it
+> (you will get some exception). We are working on this right now. We still wanted to provide a way to record them
+> though and that's why we publish the link to /snaps/terminal-recorder-demo.sideload/current/record-terminal, which
+> has some logic to run outside of the wrapper command, and thus, this limitation. Note that you can also run
+> commands as root using sudo!
