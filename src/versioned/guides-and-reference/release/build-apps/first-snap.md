@@ -255,7 +255,7 @@ Exit the classic dimension (or open another ssh connexion to the board) and head
 Install it and play with it!
 ```sh
 cd terminal-recorder
-sudo snappy install terminal-recorder-demo_0.42_amd64.snap
+sudo snappy install terminal-recorder-demo_0.42_*.snap
 ```
 
 Head your browser to http://webdm.local:8080, it will tell you to run `terminal-recorder-demo.record-terminal` on your
