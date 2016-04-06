@@ -89,7 +89,7 @@ file to make the different sections clearer):
 parts:
   webserver:
     plugin: nodejs
-    source: https://github.com/didrocks/asciinema-local-server
+    source: https://github.com/didrocks/asciinema-local-server.git
     source-type: git
 ```
 
@@ -157,11 +157,11 @@ parts:
   […]
   asciinema:
     plugin: go
-    source: https://github.com/asciinema/asciinema
+    source: https://github.com/asciinema/asciinema.git
     source-type: git
   recorder-command-glue:
     plugin: copy
-    source: https://github.com/didrocks/recorder-command
+    source: https://github.com/didrocks/recorder-command.git
     source-type: git
     files:
       'record-terminal*': '.'
@@ -222,15 +222,15 @@ plugs:
 parts:
   webserver:
     plugin: nodejs
-    source: https://github.com/didrocks/asciinema-local-server
+    source: https://github.com/didrocks/asciinema-local-server.git
     source-type: git
   asciinema:
     plugin: go
-    source: https://github.com/asciinema/asciinema
+    source: https://github.com/asciinema/asciinema.git
     source-type: git
   recorder-command-glue:
     plugin: copy
-    source: https://github.com/didrocks/recorder-command
+    source: https://github.com/didrocks/recorder-command.git
     source-type: git
     files:
       'record-terminal*': '.'
