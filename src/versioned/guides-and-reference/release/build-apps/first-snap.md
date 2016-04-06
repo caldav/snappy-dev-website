@@ -164,7 +164,7 @@ parts:
     source: https://github.com/didrocks/recorder-command
     source-type: git
     files:
-      '*': '.'
+      'record-terminal*': '.'
     stage-packages: [qrencode, byobu]
 ```
 
@@ -173,7 +173,9 @@ build and install into `parts/asciinema` subdirectory. It is that easy!
 
 We are also adding another **recorder-command-glue** part, referencing as well another source which is a couple of shell
 scripts calling as told previously **asciinema**, **qrencode**, **byobu**. We are asking the **copy** plugin to copy
-all files from the **source** to the destination (`'*': '.`).
+all certain file pattern from the **source** to the destination root (`'record-terminal*': '.'`). We couldn't tell it
+to copy everything (`'*': '.`) from source as both **recorder-command-glue** and **webserver** parts are copying the
+same file name `README.md` with different content to the same destination.
 
 > Note that those scripts could also be in the same directory than our `snapcraft.yaml` file (we would then just set
 `source: .`). This is available with any of the plugins, but for the sake of easiness of this tutorial, we only wanted
@@ -231,7 +233,7 @@ parts:
     source: https://github.com/didrocks/recorder-command
     source-type: git
     files:
-      '*': '.'
+      'record-terminal*': '.'
     stage-packages: [qrencode, byobu]
 ```
 
