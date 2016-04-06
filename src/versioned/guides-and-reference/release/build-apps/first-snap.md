@@ -163,6 +163,8 @@ parts:
     plugin: copy
     source: https://github.com/didrocks/recorder-command
     source-type: git
+    files:
+      '*': '.'
     stage-packages: [qrencode, byobu]
 ```
 
@@ -170,7 +172,8 @@ The **asciinema** part is referencing the **go** plugin will install golang on t
 build and install into `parts/asciinema` subdirectory. It is that easy!
 
 We are also adding another **recorder-command-glue** part, referencing as well another source which is a couple of shell
-scripts calling as told previously **asciinema**, **qrencode**, **byobu**
+scripts calling as told previously **asciinema**, **qrencode**, **byobu**. We are asking the **copy** plugin to copy
+all files from the **source** to the destination (`'*': '.`).
 
 > Note that those scripts could also be in the same directory than our `snapcraft.yaml` file (we would then just set
 `source: .`). This is available with any of the plugins, but for the sake of easiness of this tutorial, we only wanted
@@ -225,6 +228,10 @@ parts:
     source-type: git
   recorder-command-glue:
     plugin: copy
+    source: https://github.com/didrocks/recorder-command
+    source-type: git
+    files:
+      '*': '.'
     stage-packages: [qrencode, byobu]
 ```
 
